@@ -11,12 +11,13 @@
                     <div class="app-brand justify-content-center">
                         <a href="#" class="app-brand-link gap-2">
                             <img src="<?= base_url(); ?>/assets/img/icons/logo.png" class="circle-img" alt="logo">
-                            <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
+                            <!-- <span class="app-brand-text demo text-body fw-bolder">SiRuang</span> -->
+                            
                         </a>
                     </div>
                     <!-- /Logo -->
-                    <h4 class="mb-2">Welcome to Sneat! 👋</h4>
-                    <p class="mb-4">Please sign-in to your account and start the adventure</p>
+                    <h4 class="mb-2">SiRuang</h4>
+                    <p class="mb-4">Silahkan masuk ke sistem menggunakan akun anda</p>
 
                     <p class="login-box-msg"><?= lang('Auth.loginTitle') ?></p>
 
