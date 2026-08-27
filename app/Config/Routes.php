@@ -3,5 +3,13 @@
 use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
-$routes->get('/', 'Home::index', ['filter' => 'role:admin,useropd']);
-$routes->get('/landingsiruang', 'Landing::index');
+
+/**
+ * ROUTES HALAMAN LANDING PAGE
+ */
+$routes->get('/', 'Landing::index');
+
+/**
+ * ROUTES HALAMAN ADMIN
+ */
+$routes->get('/home', 'Home::index', ['filter' => 'role:admin,useropd']);
