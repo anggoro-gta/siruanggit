@@ -24,7 +24,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="/login">Login <i class="bi bi-box-arrow-in-right"></i></a>
+      <a class="btn-getstarted" href="/home">Login <i class="bi bi-box-arrow-in-right"></i></a>
 
     </div>
   </header>
