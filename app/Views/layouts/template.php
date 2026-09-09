@@ -91,7 +91,7 @@
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="<?= base_url() ?>/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        <img src="<?= base_url() ?>/assets/img/avatars/user.png" alt class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -100,12 +100,12 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="<?= base_url() ?>/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="<?= base_url() ?>/assets/img/avatars/user.png" alt class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">Desa Kayen Kidul</span>
-                                                    <small class="text-muted">User</small>
+                                                    <span class="fw-semibold d-block"><?= user()->fullname; ?></span>
+                                                    <small class="text-muted"><?= user()->kategori; ?></small>
                                                 </div>
                                             </div>
                                         </a>
@@ -166,9 +166,8 @@
                                 ©
                                 <script>
                                     document.write(new Date().getFullYear());
-                                </script>
-                                , gta project &
-                                <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
+                                </script>,
+                                bagian umum setda Kab. Kediri
                             </div>
                             <!-- <div>
                                 <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
