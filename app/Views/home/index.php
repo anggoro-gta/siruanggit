@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Jumlah Pengajuan</span>
-                    <h3 class="card-title mb-2">4684</h3>                    
+                    <h3 class="card-title mb-2">4684</h3>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Pengajuan Diterima</span>
-                    <h3 class="card-title mb-2">2698</h3>                    
+                    <h3 class="card-title mb-2">2698</h3>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
                             <img
-                                src="../assets/img/icons/unicons/chart-success.png"
+                                src="../assets/img/icons/unicons/denial.png"
                                 alt="chart success"
                                 class="rounded" />
                         </div>
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Pengajuan Ditolak</span>
-                    <h3 class="card-title mb-2">1033</h3>                    
+                    <h3 class="card-title mb-2">1033</h3>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
                     <div class="card-title d-flex align-items-start justify-content-between">
                         <div class="avatar flex-shrink-0">
                             <img
-                                src="../assets/img/icons/unicons/chart-success.png"
+                                src="../assets/img/icons/unicons/trash.png"
                                 alt="chart success"
                                 class="rounded" />
                         </div>
@@ -168,18 +168,26 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
                                 <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                <!-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> -->
                             </div>
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Pengajuan Dibatalkan</span>
-                    <h3 class="card-title mb-2">2698</h3>                    
+                    <h3 class="card-title mb-2">1</h3>
                 </div>
             </div>
         </div>
-        
+
 
     </div>
 </div>
 <!-- / Content -->
+<?= $this->endSection(); ?>
+
+<?= $this->section('javascriptkhusus'); ?>
+<script>   
+    const lidashboard = document.querySelector('.lidashboard');    
+    
+    lidashboard.classList.add('active');    
+</script>
 <?= $this->endSection(); ?>
