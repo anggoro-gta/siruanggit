@@ -26,7 +26,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title><?= $tittle ?></title>
+    <title><?= $title ?></title>
 
     <meta name="description" content="" />
 
@@ -43,6 +43,17 @@
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/fonts/boxicons.css" />
 
+    <!-- DataTables -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
     <!-- Core CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
@@ -52,6 +63,7 @@
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
+    <?= $this->renderSection('csskhusus'); ?>
 
     <!-- Helpers -->
     <script src="<?= base_url() ?>/assets/vendor/js/helpers.js"></script>
@@ -217,6 +229,23 @@
     <script src="<?= base_url() ?>/assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
+    <!-- DataTables  & Plugins -->
+    <script src="<?= base_url() ?>/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/jszip/jszip.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="<?= base_url() ?>/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="<?= base_url() ?>/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
     <!-- Vendors JS -->
 
     <!-- Main JS -->
@@ -224,10 +253,55 @@
 
     <!-- Page JS -->
 
-    <script src="<?= base_url() ?>/assets/js/form-basic-inputs.js"></script>
+    <!-- <script src="<?= base_url() ?>/assets/js/form-basic-inputs.js"></script> -->
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <?php
+    $flashSuccess = session()->getFlashdata('success');
+    $flashError   = session()->getFlashdata('error');
+    ?>
+
+    <script>
+    console.log('Swal tersedia:', typeof Swal);
+    console.log('Success:', <?= json_encode($flashSuccess) ?>);
+    console.log('Error:', <?= json_encode($flashError) ?>);
+    </script>
+
+    <?php if ($flashSuccess) : ?>
+    <script>
+        const ToastSuccess = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        ToastSuccess.fire({
+            icon: 'success',
+            title: <?= json_encode($flashSuccess) ?>
+        });
+    </script>
+    <?php endif; ?>
+
+    <?php if ($flashError) : ?>
+    <script>
+        const ToastSuccess = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        ToastSuccess.fire({
+            icon: 'error',
+            title: <?= json_encode($flashSuccess) ?>
+        });
+    </script>
+    <?php endif; ?>
 
     <!-- section javascript isinya disini -->
     <?= $this->renderSection('javascriptkhusus'); ?>
