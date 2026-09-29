@@ -118,7 +118,6 @@ class SliderController extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            dd($this->validator->getErrors());
             return redirect()->back()
                 ->withInput()
                 ->with('errors', $this->validator->getErrors());
@@ -196,7 +195,7 @@ class SliderController extends BaseController
             $lastId = $db->insertID();
 
             if (!$lastId) {
-                throw new \RuntimeException('ID user tidak ditemukan');
+                throw new \RuntimeException('ID slider tidak ditemukan');
             }
 
             $updated = $db->table('kode_counter')
@@ -570,7 +569,7 @@ class SliderController extends BaseController
             $row = $this->slider->getById($id);
 
             if (!$row) {
-                throw new \RuntimeException('User tidak ditemukan');
+                throw new \RuntimeException('Slider tidak ditemukan');
             }
 
             /*
@@ -584,7 +583,7 @@ class SliderController extends BaseController
             }
 
             /*
-            * Hapus user dari database
+            * Hapus slider dari database
             */
             $deleted = $db->table('ms_slider')
                 ->where('id', $id)

@@ -39,14 +39,14 @@
                 <div data-i18n="Analytics">Slider</div>
             </a>
         </li>   
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-ruang">
+            <a href="<?= base_url('master-ruang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-building-house"></i>
                 <div data-i18n="Analytics">Ruang</div>
             </a>
         </li>
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-ketentuan">
+            <a href="<?= base_url('master-ketentuan') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cog"></i>
                 <div data-i18n="Analytics">Ketentuan</div>
             </a>

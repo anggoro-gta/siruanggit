@@ -31,3 +31,21 @@ $routes->post('/master-slider/store', 'SliderController::store', ['filter' => 'r
 $routes->get('/master-slider/edit/(:num)', 'SliderController::edit/$1', ['filter' => 'role:admin']);
 $routes->post('/master-slider/update', 'SliderController::update', ['filter' => 'role:admin']);
 $routes->get('/master-slider/delete/(:num)', 'SliderController::delete/$1', ['filter' => 'role:admin']);
+
+// master-ruang
+$routes->get('/master-ruang', 'RuangController::index', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], '/master-ruang/data', 'RuangController::getData', ['filter' => 'role:admin']);
+$routes->get('/master-ruang/create', 'RuangController::create', ['filter' => 'role:admin']);
+$routes->post('/master-ruang/store', 'RuangController::store', ['filter' => 'role:admin']);
+$routes->get('/master-ruang/edit/(:num)', 'RuangController::edit/$1', ['filter' => 'role:admin']);
+$routes->post('/master-ruang/update', 'RuangController::update', ['filter' => 'role:admin']);
+$routes->get('/master-ruang/delete/(:num)', 'RuangController::delete/$1', ['filter' => 'role:admin']);
+
+// master-ketentuan
+$routes->get('/master-ketentuan', 'KetentuanController::index', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], '/master-ketentuan/data', 'KetentuanController::getData', ['filter' => 'role:admin']);
+$routes->get('/master-ketentuan/create', 'KetentuanController::create', ['filter' => 'role:admin']);
+$routes->post('/master-ketentuan/store', 'KetentuanController::store', ['filter' => 'role:admin']);
+$routes->get('/master-ketentuan/edit/(:num)', 'KetentuanController::edit/$1', ['filter' => 'role:admin']);
+$routes->post('/master-ketentuan/update', 'KetentuanController::update', ['filter' => 'role:admin']);
+$routes->get('/master-ketentuan/delete/(:num)', 'KetentuanController::delete/$1', ['filter' => 'role:admin']);
