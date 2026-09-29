@@ -555,11 +555,11 @@ class UserController extends BaseController
             $password = trim((string) $this->request->getPost('password'));
 
             if ($password !== '') {
-                $data['password_hash'] = password_hash(
-                    $password,
-                    PASSWORD_DEFAULT
-                );
-            }
+                // $data['password_hash'] = password_hash(
+                //     $password,
+                //     PASSWORD_DEFAULT
+                // );
+                $data['password_hash'] = Password::hash($password);
 
             /*
             * ============================
