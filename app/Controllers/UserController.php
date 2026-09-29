@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-
+use Myth\Auth\Password;
 use App\Models\User;
 
 class UserController extends BaseController
@@ -253,11 +253,12 @@ class UserController extends BaseController
             }else{
                 $email = trim((string) $this->request->getPost('username')) .'@mail.com';
             }
-
+            
             $data = [
                 'kategori'         => $kategori,
                 'username'         => trim((string) $this->request->getPost('username')),
-                'password_hash'    => password_hash('kedirikab123@#', PASSWORD_DEFAULT),
+                // 'password_hash'    => password_hash('kedirikab123@#', PASSWORD_DEFAULT),
+                'password_hash'    => Password::hash('kedirikab123@#'),
                 'fullname'         => $this->request->getPost('fullname'),
                 'alamat'           => $this->request->getPost('alamat'),
                 'nohp'             => $this->request->getPost('nohp'),
@@ -574,10 +575,11 @@ class UserController extends BaseController
             $password = trim((string) $this->request->getPost('password'));
 
             if ($password !== '') {
-                $data['password_hash'] = password_hash(
-                    $password,
-                    PASSWORD_DEFAULT
-                );
+                // $data['password_hash'] = password_hash(
+                //     $password,
+                //     PASSWORD_DEFAULT
+                // );
+                $data['password_hash'] = Password::hash($password);
             }
 
             /*
