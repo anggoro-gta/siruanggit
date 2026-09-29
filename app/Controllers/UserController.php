@@ -559,7 +559,9 @@ class UserController extends BaseController
                 //     $password,
                 //     PASSWORD_DEFAULT
                 // );
-                $data['password_hash'] = Password::hash($password);
+                $data['password_hash'] = Password::hash($password
+                );
+            }
 
             /*
             * ============================
