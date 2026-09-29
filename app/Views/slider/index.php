@@ -115,6 +115,11 @@
         align-items: center;
         justify-content: center;
     }
+    
+    .gambar {
+        border: 1px solid #dddddd;
+        border-radius: 8px; /* opsional */
+    }
 
     @media (max-width: 767.98px) {
         .user-table-card .dataTables_wrapper .dataTables_length,
@@ -140,8 +145,8 @@
             <div>
                 <h5 class="card-title"><?= $title ?></h5>
             </div>
-            <a href="<?= base_url('master-user/create'); ?>" class="btn btn-success">
-                <i class="bx bx-plus me-1"></i> Tambah User
+            <a href="<?= base_url('master-slider/create'); ?>" class="btn btn-success">
+                <i class="bx bx-plus me-1"></i> Tambah Slider
             </a>
         </div>
         <div class="table-responsive">
@@ -149,12 +154,9 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Username</th>
-                        <th>Organisasi</th>
-                        <th>Pimpinan</th>
-                        <th>Penanggung Jawab</th>
-                        <th>Surat Penugasan</th>
-                        <th>Status</th>
+                        <th>Gambar</th>
+                        <th>Urutan</th>
+                        <th>Tampil</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -167,7 +169,7 @@
 
 <?= $this->section('javascriptkhusus'); ?>
 <script>
-    const activemenu = document.querySelector('.active-menu-user');
+    const activemenu = document.querySelector('.active-menu-slider');
 
     activemenu.classList.add('active');
 
@@ -202,7 +204,7 @@
             serverSide: true,
             deferRender: true,
             ajax: {
-                url: "<?= base_url('master-user/data'); ?>",
+                url: "<?= base_url('master-slider/data'); ?>",
                 type: "POST",
                 data: d => {
                     // d.kode_opd = kodeOpd;
@@ -211,12 +213,9 @@
             },
             columns: [
                 { data: null, orderable: false, searchable: false, render: (d,t,r,meta) => meta.row + 1 + table.page.info().start },
-                { data: 'username' },
-                { data: 'organisasi', className: 'wrap-text' },
-                { data: 'pimpinan', orderable:false, className: 'wrap-text' },
-                { data: 'pj', orderable:false, className: 'wrap-text' },
-                { data: 'surat_penugasan', orderable:false, className: 'text-center' },
-                { data: 'kategori', orderable:false, className: 'text-center' },
+                { data: 'gambar_slide', orderable:false, searchable:false},
+                { data: 'nourut', className: 'text-center'},
+                { data: 'is_show', orderable:false, searchable:false, className: 'text-center' },
                 { data: 'action', orderable:false, searchable:false, className:'text-center' }
             ]
         });

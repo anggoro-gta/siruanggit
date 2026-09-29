@@ -220,7 +220,27 @@ class UserController extends BaseController
                 ")->getRow();
 
                 if (!$counter) {
-                    throw new \RuntimeException('Counter dinas belum tersedia');
+                    $row = $db->table('users')
+                        ->orderBy('kode_dinas', 'DESC')
+                        ->get()
+                        ->getRow();
+
+                    $lastKodeDinasCounter = 0;
+
+                    if ($row) {
+                        $string = $row->kode_dinas;
+                        $lastKodeDinasCounter = (int) preg_replace('/\D/', '', $string);
+                    }
+
+                    $db->table('kode_counter')->insert([
+                        'nama_kode' => 'dinas',
+                        'nomor' => $lastKodeDinasCounter,
+                    ]);
+
+                    // Tetapkan nilai counter setelah insert
+                    $counter = (object) [
+                        'nomor' => $lastKodeDinasCounter,
+                    ];
                 }
 
                 $nomorBaru = (int) $counter->nomor + 1;

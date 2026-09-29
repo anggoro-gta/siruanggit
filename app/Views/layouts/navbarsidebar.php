@@ -28,13 +28,13 @@
             <span class="menu-header-text">Master Data</span>
         </li>
         <li class="menu-item active-menu-user">
-            <a href="<?= url_to('master.user') ?>" class="menu-link">
+            <a href="<?= base_url('master-user') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Analytics">User</div>
             </a>
         </li> 
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-slider">
+            <a href="<?= base_url('master-slider') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-image"></i>
                 <div data-i18n="Analytics">Slider</div>
             </a>
