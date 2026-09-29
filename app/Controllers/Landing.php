@@ -7,7 +7,7 @@ class Landing extends BaseController
     public function index(): string
     {
         $data = [
-            'tittle' => 'Landing Page',
+            'title' => 'Landing Page',
         ];
 
         return view('landing/index', $data);
