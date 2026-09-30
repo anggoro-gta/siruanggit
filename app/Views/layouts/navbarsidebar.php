@@ -105,20 +105,20 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Setting</span>
         </li>
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-tentang-kami">
+            <a href="<?= base_url('setting-tentang-kami') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-info-circle"></i>
                 <div data-i18n="Analytics">Tentang Kami</div>
             </a>
         </li> 
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-pertanyaan">
+            <a href="<?= base_url('setting-pertanyaan') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-question-mark"></i>
                 <div data-i18n="Analytics">Pertanyaan Umum</div>
             </a>
         </li>   
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-kontak-kami">
+            <a href="<?= base_url('setting-kontak-kami') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-phone-call"></i>
                 <div data-i18n="Analytics">Kontak Kami</div>
             </a>

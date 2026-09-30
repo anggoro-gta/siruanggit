@@ -1,0 +1,81 @@
+<?= $this->extend('layouts/template'); ?>
+
+<?= $this->section('csskhusus'); ?>
+<style>
+    .form-label {
+        text-transform: none !important;
+        font-size: 10pt;
+        color: #384551;
+    }
+    .form-control,
+    .input-group-text {
+        min-height: 38px;
+    }
+
+    .form-label {
+        display: block;
+        line-height: 1.5;
+        margin-bottom: .5rem;
+    }
+
+    .gambar {
+        border: 1px solid #dddddd;
+        border-radius: 8px; /* opsional */
+    }
+</style>
+<?= $this->endSection(); ?>
+
+<?= $this->section('content'); ?>
+<?php $errors = session('errors') ?? []; ?>
+<!-- Content Wrapper. Contains page content -->
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <div>
+                <h5 class="card-title"><?= $title ?></h5>
+            </div>
+            <a href="<?= base_url('setting-pertanyaan'); ?>" class="btn btn-secondary">
+                <i class="bx bx-arrow-back me-1"></i> Kembali
+            </a>
+        </div>
+        <div class="card-body">
+            <?php if (!empty($errors['general'])) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= esc($errors['general']) ?>
+                </div>
+            <?php endif; ?>
+            <form autocomplete="off" method="POST" action="<?= $url ?>" enctype="multipart/form-data">
+                <input type="hidden" class="form-control" name="id" id="id" value="<?= $id ?>">
+                <div class="row">
+                    <div class="mb-4 col-md-12">
+                        <label for="pertanyaan" class="form-label">Pertanyaan <sup class="text-danger">*</sup></label>
+                        <textarea class="form-control <?= isset($errors['pertanyaan']) ? 'is-invalid' : '' ?>" id="pertanyaan" name="pertanyaan" required rows="5"><?= esc(old('pertanyaan', $pertanyaan ?? '')) ?></textarea>
+                        <?php if (isset($errors['pertanyaan'])) : ?><div class="invalid-feedback d-block"><?= esc($errors['pertanyaan']) ?></div><?php endif; ?>
+                    </div>
+                    <div class="mb-4 col-md-12">
+                        <label for="jawaban" class="form-label">Jawaban <sup class="text-danger">*</sup></label>
+                        <textarea class="form-control <?= isset($errors['jawaban']) ? 'is-invalid' : '' ?>" id="jawaban" name="jawaban" required rows="5"><?= esc(old('jawaban', $jawaban ?? '')) ?></textarea>
+                        <?php if (isset($errors['jawaban'])) : ?><div class="invalid-feedback d-block"><?= esc($errors['jawaban']) ?></div><?php endif; ?>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-secondary" type="reset">Batal</button>
+                    <button class="btn btn-primary" type="submit"><?= $button ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection(); ?>
+
+<?= $this->section('javascriptkhusus'); ?>
+<script>
+    const activemenu = document.querySelector('.active-menu-pertanyaan');
+
+    activemenu.classList.add('active');
+
+</script>
+
+
+<?= $this->endSection(); ?>

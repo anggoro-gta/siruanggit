@@ -49,3 +49,22 @@ $routes->post('/master-ketentuan/store', 'KetentuanController::store', ['filter'
 $routes->get('/master-ketentuan/edit/(:num)', 'KetentuanController::edit/$1', ['filter' => 'role:admin']);
 $routes->post('/master-ketentuan/update', 'KetentuanController::update', ['filter' => 'role:admin']);
 $routes->get('/master-ketentuan/delete/(:num)', 'KetentuanController::delete/$1', ['filter' => 'role:admin']);
+
+// setting-tentang-kami
+$routes->get('/setting-tentang-kami', 'TentangKamiController::index', ['filter' => 'role:admin']);
+$routes->post('/setting-tentang-kami/store', 'TentangKamiController::store', ['filter' => 'role:admin']);
+$routes->post('/setting-tentang-kami/update', 'TentangKamiController::update', ['filter' => 'role:admin']);
+
+// setting-pertanyaan
+$routes->get('/setting-pertanyaan', 'PertanyaanController::index', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], '/setting-pertanyaan/data', 'PertanyaanController::getData', ['filter' => 'role:admin']);
+$routes->get('/setting-pertanyaan/create', 'PertanyaanController::create', ['filter' => 'role:admin']);
+$routes->post('/setting-pertanyaan/store', 'PertanyaanController::store', ['filter' => 'role:admin']);
+$routes->get('/setting-pertanyaan/edit/(:num)', 'PertanyaanController::edit/$1', ['filter' => 'role:admin']);
+$routes->post('/setting-pertanyaan/update', 'PertanyaanController::update', ['filter' => 'role:admin']);
+$routes->get('/setting-pertanyaan/delete/(:num)', 'PertanyaanController::delete/$1', ['filter' => 'role:admin']);
+
+// setting-kontak-kami
+$routes->get('/setting-kontak-kami', 'KontakKamiController::index', ['filter' => 'role:admin']);
+$routes->post('/setting-kontak-kami/store', 'KontakKamiController::store', ['filter' => 'role:admin']);
+$routes->post('/setting-kontak-kami/update', 'KontakKamiController::update', ['filter' => 'role:admin']);
