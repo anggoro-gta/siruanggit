@@ -4,16 +4,43 @@
     <section id="hero" class="hero section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <?php $slidercount = count($sliderdata); ?>
 
-        <div id="heroSlideshow" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="4500">
+        <div id="heroSlideshow" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="4500">                 
+
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <?php $j = 1; ?>
+          <?php for ($i = 0; $i < $slidercount; $i++) { ?>            
+            <?php $j++; ?>
+            <?php if ($i == 0){ ?> 
+              <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="<?= $i; ?>" class="active" aria-current="true" aria-label="Slide <?= $j; ?>"></button>
+            <?php } else if($i != 0) { ?>
+              <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="<?= $i; ?>" aria-label="Slide <?= $j; ?>"></button>
+            <?php } ?>            
+          <?php } ?>
+            <!-- <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#heroSlideshow" data-bs-slide-to="2" aria-label="Slide 3"></button> -->
           </div>
 
           <div class="carousel-inner">
+          <?php $j = 1; ?>
+          <?php for ($i = 0; $i < $slidercount; $i++) { ?>            
+            <?php $j++; ?>
+            <?php if ($i == 0){ ?>
             <div class="carousel-item active">
+              <div class="row align-items-center">
+                <div class="col-lg-12"><div class="hero-image"><img src="<?= base_url('upload/slider/') ?><?= $sliderdata[$i]['file_slider']; ?>" alt="" class="img-fluid"></div></div>
+              </div>
+            </div>
+            <?php } else if ($i != 0) { ?>
+              <div class="carousel-item">
+                <div class="row align-items-center">
+                  <div class="col-lg-12"><div class="hero-image"><img src="<?= base_url('upload/slider/') ?><?= $sliderdata[$i]['file_slider']; ?>" alt="" class="img-fluid"></div></div>
+                </div>
+              </div>
+            <?php } ?>
+            <!-- <div class="carousel-item active">
               <div class="row align-items-center">
                 <div class="col-lg-12"><div class="hero-image"><img src="<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg" alt="Ilustrasi SiRuang" class="img-fluid"></div></div>
               </div>
@@ -29,7 +56,8 @@
               <div class="row align-items-center">
                 <div class="col-lg-12"><div class="hero-image"><img src="<?= base_url('landing/assets/') ?>img/SLD-0000004_20260811010438.png" alt="Tampilan aplikasi SiRuang" class="img-fluid"></div></div>
               </div>
-            </div>
+            </div> -->            
+          <?php } ?>
           </div>
 
           <button class="carousel-control-prev" type="button" data-bs-target="#heroSlideshow" data-bs-slide="prev" aria-label="Slide sebelumnya"><span class="carousel-control-prev-icon" aria-hidden="true"></span></button>
@@ -288,7 +316,7 @@
 
             <div class="row feature-list-wrapper">
 
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <ul class="feature-list">
 
                         <li>
@@ -307,9 +335,9 @@
                         </li>
 
                     </ul>
-                </div>
+                </div> -->
 
-                <div class="col-md-6">
+                <!-- <div class="col-md-6">
                     <ul class="feature-list">
 
                         <li>
@@ -328,7 +356,7 @@
                         </li>
 
                     </ul>
-                </div>
+                </div> -->
 
             </div>
           </div>

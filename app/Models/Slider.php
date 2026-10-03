@@ -81,4 +81,23 @@ class Slider extends Model
     {
         return $this->find($id);
     }
+
+    //method tambahan GTA
+    public function getsliderisshow()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('ms_slider');
+
+        $builder->select('*');
+
+        $array = ['is_show' => 1];
+        $builder->where($array);
+
+        $builder->orderBy('nourut', 'ASC');
+        $query = $builder->get();
+
+        $total = $query->getResultArray();
+
+        return $total;
+    }
 }
