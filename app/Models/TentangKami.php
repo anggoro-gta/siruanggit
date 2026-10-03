@@ -16,4 +16,19 @@ class TentangKami extends Model
         'judul',
         'isi',
     ];
+
+    //method tambahan GTA
+    public function gettentangkami()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('st_tentangkami');
+
+        $builder->select('*');
+
+        $query = $builder->get();
+
+        $total = $query->getResultArray();
+
+        return $total;
+    }
 }

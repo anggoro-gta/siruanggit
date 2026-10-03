@@ -304,14 +304,11 @@
             <span class="about-meta">TENTANG KAMI</span>
 
             <h2 class="about-title">
-                Kemudahan dalam Menemukan dan Memesan Ruangan
+                <?= $tentangkamidata[0]['judul'] ?? 'Tentang Kami' ?>
             </h2>
 
             <p class="about-description">
-                SiRuang merupakan platform informasi dan layanan peminjaman ruangan
-                yang membantu masyarakat dan pengguna dalam menemukan berbagai
-                pilihan ruangan yang tersedia, melihat informasi fasilitas,
-                serta melakukan pemesanan ruangan secara lebih mudah dan terorganisir.
+                <?= $tentangkamidata[0]['isi'] ?? 'Tentang Kami' ?>
             </p>
 
             <div class="row feature-list-wrapper">
