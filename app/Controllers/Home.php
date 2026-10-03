@@ -6,10 +6,18 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        $data = [
+        $kategoriuser = user()->kategori;
+
+         $data = [
             'title' => 'SiRuang | Kab. Kediri',
         ];
+        
+        if ($kategoriuser === 'admin') {
+            return view('home/index', $data);
+        } else {
+            return view('home/index_opd', $data);
+        }
 
-        return view('home/index', $data);
+        
     }
 }
