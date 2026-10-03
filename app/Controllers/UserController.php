@@ -293,6 +293,18 @@ class UserController extends BaseController
                 throw new \RuntimeException('ID user tidak ditemukan');
             }
 
+            if ($kategori === 'admin') {
+                $db->table('auth_groups_users')->insert([
+                    'group_id' => 1,
+                    'user_id' => $lastId
+                ]);
+            }else if ($kategori === 'opd') {
+                $db->table('auth_groups_users')->insert([
+                    'group_id' => 2,
+                    'user_id' => $lastId
+                ]);
+            }
+
             if ($kategori === 'opd') {
                 $updated = $db->table('kode_counter')
                     ->where('nama_kode', 'dinas')
@@ -488,6 +500,20 @@ class UserController extends BaseController
 
             $nomorBaru = null;
             $generateKodeBaru = false;
+
+            if ($kategori === 'admin') {
+                $db->table('auth_groups_users')
+                    ->where('user_id', $existingUser->id)
+                    ->update([
+                        'group_id' => 1,
+                    ]);
+            }else if ($kategori === 'opd') {
+                $db->table('auth_groups_users')
+                    ->where('user_id', $existingUser->id)
+                    ->update([
+                        'group_id' => 2,
+                    ]);
+            }
 
             /*
             * ============================
