@@ -486,8 +486,11 @@
                     border-radius: 10px;
                 ">
 
+                    <?php $latitude = -7.789053; ?>
+                    <?php $longitude = 112.056224; ?>
+
                     <iframe
-                        src="https://www.google.com/maps?q=-7.8167,112.0167&output=embed"
+                        src="https://www.google.com/maps?q=<?= $latitude ?>,<?= $longitude ?>&output=embed"
                         width="100%"
                         height="400"
                         style="border:0;"
@@ -501,7 +504,7 @@
                 <div class="text-center mt-4">
 
                     <a
-                        href="https://www.google.com/maps?q=-7.8167,112.0167"
+                        href="https://www.google.com/maps?q=<?= $latitude ?>,<?= $longitude ?>"
                         target="_blank"
                         class="btn">
 
