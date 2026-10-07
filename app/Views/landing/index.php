@@ -382,125 +382,41 @@
 
           <div class="col-lg-7 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
             <div class="faq-container">
+            <?php $pertanyaancount = count($pertanyaandata); ?>
 
-              <!-- FAQ 1 -->
-              <div class="faq-item faq-active">
+              <?php $j = 1; ?>
+              <?php for ($i = 0; $i < $pertanyaancount; $i++) { ?>            
+              <?php $j++; ?>
+                <?php if ($i == 0){ ?>
+                <!-- FAQ 1 -->
+                <div class="faq-item faq-active">
 
-                  <h3>Apa itu SiRuang?</h3>
+                    <h3><?= $pertanyaandata[$i]['pertanyaan']; ?></h3>
 
-                  <div class="faq-content">
-                      <p>
-                          SiRuang merupakan aplikasi layanan informasi dan peminjaman
-                          ruangan Pemerintah Kabupaten Kediri. Melalui SiRuang,
-                          pengguna dapat melihat informasi ruangan, fasilitas,
-                          kapasitas, lokasi, serta melakukan pemesanan ruangan.
-                      </p>
-                  </div>
+                    <div class="faq-content">
+                        <p><?= $pertanyaandata[$i]['jawaban']; ?></p>
+                    </div>
 
-                  <i class="faq-toggle bi bi-chevron-right"></i>
+                    <i class="faq-toggle bi bi-chevron-right"></i>
 
-              </div>
-              <!-- End Faq item -->
+                </div>
+                <!-- End Faq item -->
+                <?php } else if($i != 0) { ?>
+                <!-- FAQ 2 -->
+                <div class="faq-item">
 
+                    <h3><?= $pertanyaandata[$i]['pertanyaan']; ?></h3>
 
-              <!-- FAQ 2 -->
-              <div class="faq-item">
+                    <div class="faq-content">
+                        <p><?= $pertanyaandata[$i]['jawaban']; ?></p>
+                    </div>
 
-                  <h3>Siapa saja yang dapat menggunakan SiRuang?</h3>
+                    <i class="faq-toggle bi bi-chevron-right"></i>
 
-                  <div class="faq-content">
-                      <p>
-                          SiRuang dapat digunakan oleh pengguna yang membutuhkan
-                          informasi dan layanan peminjaman ruangan yang tersedia
-                          di lingkungan Pemerintah Kabupaten Kediri, sesuai dengan
-                          ketentuan dan kebijakan yang berlaku.
-                      </p>
-                  </div>
-
-                  <i class="faq-toggle bi bi-chevron-right"></i>
-
-              </div>
-              <!-- End Faq item -->
-
-
-              <!-- FAQ 3 -->
-              <div class="faq-item">
-
-                  <h3>Informasi apa saja yang tersedia pada SiRuang?</h3>
-
-                  <div class="faq-content">
-                      <p>
-                          SiRuang menyediakan informasi mengenai nama dan lokasi
-                          ruangan, alamat, kapasitas, luas ruangan, jumlah meja
-                          dan kursi, fasilitas yang tersedia, penanggung jawab,
-                          serta informasi pendukung lainnya.
-                      </p>
-                  </div>
-
-                  <i class="faq-toggle bi bi-chevron-right"></i>
-
-              </div>
-              <!-- End Faq item -->
-
-
-              <!-- FAQ 4 -->
-              <div class="faq-item">
-
-                  <h3>Bagaimana cara melihat detail suatu ruangan?</h3>
-
-                  <div class="faq-content">
-                      <p>
-                          Pilih ruangan yang ingin diketahui informasinya, kemudian
-                          klik tombol <strong>Lihat Selengkapnya</strong>. Sistem akan
-                          menampilkan detail ruangan, foto, fasilitas, informasi
-                          kapasitas, lokasi pada peta, serta informasi penanggung jawab.
-                      </p>
-                  </div>
-
-                  <i class="faq-toggle bi bi-chevron-right"></i>
-
-              </div>
-              <!-- End Faq item -->
-
-
-              <!-- FAQ 5 -->
-              <div class="faq-item">
-
-                  <h3>Bagaimana cara melakukan pemesanan ruangan?</h3>
-
-                  <div class="faq-content">
-                      <p>
-                          Untuk melakukan pemesanan, pilih ruangan yang diinginkan
-                          kemudian klik tombol <strong>Pesan Ruangan</strong>.
-                          Selanjutnya ikuti tahapan pemesanan yang tersedia pada
-                          sistem hingga proses pengajuan selesai.
-                      </p>
-                  </div>
-
-                  <i class="faq-toggle bi bi-chevron-right"></i>
-
-              </div>
-              <!-- End Faq item -->
-
-
-              <!-- FAQ 6 -->
-              <div class="faq-item">
-
-                  <h3>Bagaimana jika membutuhkan informasi lebih lanjut?</h3>
-
-                  <div class="faq-content">
-                      <p>
-                          Untuk mendapatkan informasi lebih lanjut mengenai ruangan,
-                          fasilitas, jadwal, atau proses peminjaman, pengguna dapat
-                          menghubungi kontak penanggung jawab yang tercantum pada
-                          informasi detail masing-masing ruangan.
-                      </p>
-                  </div>
-
-                  <i class="faq-toggle bi bi-chevron-right"></i>
-
-              </div>
-              <!-- End Faq item -->
+                </div>
+                <!-- End Faq item -->
+                <?php } ?>
+              <?php } ?>
 
           </div>
           </div>
