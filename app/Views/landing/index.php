@@ -447,7 +447,7 @@
                 </div>
                 <div class="content">
                   <h4>Alamat</h4>
-                  <p>Jl. Soekarno-Hatta No. 1, Kediri</p>
+                  <p><?= $kontakkamidata[0]['alamat']; ?></p>
                 </div>
               </div>
 
@@ -457,7 +457,7 @@
                 </div>
                 <div class="content">
                   <h4>Telepon</h4>
-                  <p>+62 812-5990-7707</p>
+                  <p><?= $kontakkamidata[0]['telp']; ?></p>
                 </div>
               </div>
 
@@ -467,7 +467,7 @@
                 </div>
                 <div class="content">
                   <h4>Email</h4>
-                  <p>bagian_umum@kedirikab.go.id</p>
+                  <p><?= $kontakkamidata[0]['email']; ?></p>
                 </div>
               </div>
             </div>
@@ -486,8 +486,8 @@
                     border-radius: 10px;
                 ">
 
-                    <?php $latitude = -7.789053; ?>
-                    <?php $longitude = 112.056224; ?>
+                    <?php $latitude = $kontakkamidata[0]['latitude']; ?>
+                    <?php $longitude = $kontakkamidata[0]['longitude']; ?>
 
                     <iframe
                         src="https://www.google.com/maps?q=<?= $latitude ?>,<?= $longitude ?>&output=embed"

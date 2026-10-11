@@ -19,4 +19,10 @@ class KontakKami extends Model
         'latitude',
         'longitude',
     ];
+
+    public function getAll(): array
+    {
+        return $this->orderBy('id', 'ASC')
+            ->findAll();
+    }
 }
