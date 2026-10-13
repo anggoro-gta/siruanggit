@@ -647,61 +647,10 @@
   </script>
 
   <script>
-
-    const dataRuangan = {
-
-      "joyoboyo": {
-          nama: "Joyoboyo",
-          alamat: "Jl. Soekarno Hatta No.1 Kediri Gedung Setda Kab. Kediri Lantai 1",
-          notelp: "081234567890",
-          penanggungjawab: "Admin Ruangan Joyoboyo",
-          luas: "120",
-          jumlahkursi: "100",
-          jumlahmeja: "20",
-          fasilitas: "AC, LCD Projector, Sound System, WiFi",
-          foto: [
-              "<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg",
-              "<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png",
-              "<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg",
-          ],
-          googlemaps_url: "https://www.google.com/maps?q=-7.8167,112.0167"
-      },
-
-      "aula-utama-kelud": {
-          nama: "Aula Utama Kelud (Convention Hall SLG)",
-          alamat: "Jl. Erlangga Kawasan SLG",
-          notelp: "081234567891",
-          penanggungjawab: "Admin Aula Kelud",
-          luas: "500",
-          jumlahkursi: "500",
-          jumlahmeja: "50",
-          fasilitas: "AC, Sound System, LCD, WiFi, Panggung",
-          foto: [
-              "<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png",
-              "<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png",
-              "<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg",
-          ],
-          googlemaps_url: "https://www.google.com/maps?q=-7.8160,111.9800"
-      },
-
-      "kilisuci": {
-          nama: "Kilisuci",
-          alamat: "Jl. Soekarno Hatta No.1 Kediri",
-          notelp: "081234567892",
-          penanggungjawab: "Admin Ruangan Kilisuci",
-          luas: "100",
-          jumlahkursi: "80",
-          jumlahmeja: "15",
-          fasilitas: "AC, LCD Projector, WiFi",
-          foto: [
-              "<?= base_url('landing/assets/') ?>img/SLD-0000004_20260811010438.png",
-              "<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png",
-              "<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg",
-          ],
-          googlemaps_url: "https://www.google.com/maps?q=-7.8167,112.0167"
-      }
-
-    };
+      const dataRuangan = <?= json_encode(
+          $dataRuangan,
+          JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+      ) ?>;
   </script>
 
   <script>
@@ -837,6 +786,22 @@
         `;
     }
 
+  </script>
+  <script>
+      const roomSearch = document.getElementById('roomSearch');
+      const roomCards = document.querySelectorAll('.room-card-item');
+
+      roomSearch.addEventListener('input', function () {
+          const keyword = this.value.toLowerCase().trim();
+
+          roomCards.forEach(card => {
+              const searchData = card.dataset.search.toLowerCase();
+
+              card.style.display = searchData.includes(keyword)
+                  ? ''
+                  : 'none';
+          });
+      });
   </script>
 </body>
 

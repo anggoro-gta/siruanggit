@@ -154,133 +154,40 @@
         </form>
 
         <div id="roomList" class="row g-4 room-grid">
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="joyoboyo jl soekarno hatta no 1 kediri gedung setda kab kediri lantai 1">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg" alt="Ruang Joyoboyo" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Joyoboyo</h3>
-                <p class="room-address">Jl. Soekarno Hatta No.1 Kediri Gedung Setda Kab. Kediri Lantai 1</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="joyoboyo">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
+          <?php foreach ($ruangdata as $item): ?>
+              <?php
+                  $roomKey = url_title($item['nama_ruang'], '-', true);
+              ?>
 
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="aula utama kelud convention hall slg jl erlangga kawasan slg">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png" alt="Aula Utama Kelud" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Aula Utama Kelud (Convention Hall SLG)</h3>
-                <p class="room-address">Jl. Erlangga Kawasan SLG</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="aula-utama-kelud">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
+              <div
+                  class="col-xl-3 col-lg-4 col-md-6 room-card-item"
+                  data-room="<?= esc($roomKey) ?>"
+                  data-search="<?= esc(strtolower($item['nama_ruang'] . ' ' . $item['alamat'])) ?>"
+              >
+                  <article class="room-card">
+                      <img
+                          src="<?= base_url('upload/ruang/' . $item['foto1']) ?>"
+                          alt="<?= esc($item['nama_ruang']) ?>"
+                          loading="lazy"
+                      >
 
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="kilisuci jl soekarno hatta no 1 kediri">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000004_20260811010438.png" alt="Ruang Kilisuci" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Kilisuci</h3>
-                <p class="room-address">Jl. Soekarno Hatta No.1 Kediri</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="kilisuci">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
+                      <div class="room-card-body">
+                          <h3 class="fw-semibold">
+                              <?= esc(mb_strimwidth($item['nama_ruang'], 0, 25, '...')) ?>
+                          </h3>
 
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="kameswara wisma tamu canda bhirawa jl soekarno hatta no 1 kediri">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg" alt="Kameswara Wisma Tamu Canda Bhirawa" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Kameswara (Wisma Tamu Canda Bhirawa)</h3>
-                <p class="room-address">Jl. Soekarno Hatta No.1 Kediri</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="joyoboyo">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
+                          <a
+                              href="javascript:void(0)"
+                              class="btn btn-outline-primary btn-detail-ruang"
+                              data-room="<?= esc($roomKey) ?>"
+                          >
+                              Lihat Selengkapnya
+                              <i class="bi bi-arrow-right"></i>
+                          </a>
+                      </div>
+                  </article>
               </div>
-            </article>
-          </div>
-
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="pendapa panjalu jayati">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png" alt="Pendapa Panjalu Jayati" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Pendapa Panjalu Jayati</h3>
-                <p class="room-address">Kabupaten Kediri</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="joyoboyo">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="sekartaji">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000004_20260811010438.png" alt="Ruang Sekartaji" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Sekartaji</h3>
-                <p class="room-address">Kabupaten Kediri</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="joyoboyo">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="bhagawanta bhari">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000003_20260811010353.jpeg" alt="Ruang Bhagawanta Bhari" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Bhagawanta Bhari</h3>
-                <p class="room-address">Kabupaten Kediri</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="joyoboyo">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-xl-3 col-lg-4 col-md-6 room-card-item" data-room="asmorobangun convention hall">
-            <article class="room-card">
-              <img src="<?= base_url('landing/assets/') ?>img/SLD-0000005_20260811010450.png" alt="Asmorobangun Convention Hall" loading="lazy">
-              <div class="room-card-body">
-                <p class="room-rating"><i class="bi bi-star-fill" aria-hidden="true"></i> 0</p>
-                <h3>Asmorobangun (Convention Hall)</h3>
-                <p class="room-address">Kabupaten Kediri</p>
-                <a href="javascript:void(0)"
-                class="room-button btn-detail-ruang"
-                data-room="joyoboyo">
-                    Lihat Selengkapnya <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-            </article>
-          </div>
+            <?php endforeach; ?>
         </div>
 
         <p id="roomEmptyState" class="room-empty-state" hidden>Ruangan tidak ditemukan.</p>
