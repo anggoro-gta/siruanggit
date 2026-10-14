@@ -68,3 +68,14 @@ $routes->get('/setting-pertanyaan/delete/(:num)', 'PertanyaanController::delete/
 $routes->get('/setting-kontak-kami', 'KontakKamiController::index', ['filter' => 'role:admin']);
 $routes->post('/setting-kontak-kami/store', 'KontakKamiController::store', ['filter' => 'role:admin']);
 $routes->post('/setting-kontak-kami/update', 'KontakKamiController::update', ['filter' => 'role:admin']);
+
+// peminjaman-ruang-opd
+$routes->get('/peminjaman-ruang-opd', 'PeminjamanRuangOpdController::index', ['filter' => 'role:useropd']);
+$routes->match(['get', 'post'], '/peminjaman-ruang-opd/data', 'PeminjamanRuangOpdController::getData', ['filter' => 'role:useropd']);
+$routes->get('/peminjaman-ruang-opd/create', 'PeminjamanRuangOpdController::create', ['filter' => 'role:useropd']);
+$routes->post('/peminjaman-ruang-opd/timeline', 'PeminjamanRuangOpdController::timeline', ['filter' => 'role:useropd']);
+$routes->post('/peminjaman-ruang-opd/store', 'PeminjamanRuangOpdController::store', ['filter' => 'role:useropd']);
+$routes->get('/peminjaman-ruang-opd/edit/(:num)', 'PeminjamanRuangOpdController::edit/$1', ['filter' => 'role:useropd']);
+$routes->get('/peminjaman-ruang-opd/detail/(:num)', 'PeminjamanRuangOpdController::detail/$1', ['filter' => 'role:useropd']);
+$routes->post('/peminjaman-ruang-opd/update', 'PeminjamanRuangOpdController::update', ['filter' => 'role:useropd']);
+$routes->get('/peminjaman-ruang-opd/delete/(:num)', 'PeminjamanRuangOpdController::delete/$1', ['filter' => 'role:useropd']);

@@ -27,6 +27,12 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Transaksi</span>
         </li>
+        <li class="menu-item active-menu-peminjaman-ruang-opd">
+            <a href="<?= base_url('peminjaman-ruang-opd') ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Analytics">Peminjaman Ruang</div>
+            </a>
+        </li> 
         <li class="menu-item active-menu-user">
             <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-pencil"></i>

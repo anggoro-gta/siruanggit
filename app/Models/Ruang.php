@@ -74,7 +74,7 @@ class Ruang extends Model
 
         $orderBy = in_array($orderBy, $allowedOrder, true)
             ? $orderBy
-            : 'nourut';
+            : 'id';
 
         $orderDir = strtoupper($orderDir) === 'DESC'
             ? 'DESC'

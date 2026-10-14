@@ -1,0 +1,203 @@
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Model;
+
+class PeminjamanRuang extends Model
+{
+    protected $table = 'tb_pinjamruang';
+    protected $primaryKey = 'id';
+    protected $returnType = 'array';
+    // Tabel tb_pinjamruang tidak memiliki kolom created_at/updated_at.
+    protected $useTimestamps = false;
+    // protected $allowedFields = ['email', 'username'];
+
+    protected $allowedFields = [
+        'nopinjam',
+        'tglpinjam',
+        'namaorganisasi',
+        'namapeminjam',
+        'nohp',
+        'acara',
+        'tgljamacaramulai',
+        'tgljamacaraselesai',
+        'filesuratpinjam',
+        'kode_ruang',
+        'isverifikasi',
+        'tglverifikasi',
+        'keteranganverifikasi',
+        'kode_dinas',
+        'username',
+        'keteranganpembatalan',
+        'nik',
+        'wasatuhari',
+        'waduajam',
+        'rating',
+        'testimoni',
+        'durasisewa',
+        'hargasewa',
+        'totalhargasewa',
+        'isverifikasibayar',
+        'keteranganverifikasibayar',
+        'buktibayar',
+        'dokskrd',
+        'dokizinpenggunaan',
+        'doktdp',
+        'dokpinjamruang',
+        'dokskrdpeminjam',
+        'doktdppeminjam',
+        'dokpinjamruangpeminjam',
+        'iskirimrating',
+        'issuratizin',
+        'istampilkantestimoni',
+        'fototestimoni',
+        'iskirimnotifbayar',
+        'created_by',
+        'created_at',
+        'updated_at',
+        'updated_by'
+    ];
+
+    private function baseQuery(string $kodeDinas = '', string $search = '')
+    {
+        $builder = $this->builder();
+        $builder
+            ->select([
+                'tb_pinjamruang.*',
+                'ms_ruang.nama_ruang',
+                'ms_ruang.alamat AS alamat_ruang',
+                'ms_ruang.luas_ruang',
+                'ms_ruang.jml_kursi',
+                'ms_ruang.jml_meja',
+                'ms_ruang.fasilitas',
+                'ms_ruang.peruntukan',
+                'ms_ruang.namapj AS namapj_ruang',
+                'ms_ruang.telppj AS telppj_ruang'
+            ])
+            ->join(
+                'ms_ruang',
+                'ms_ruang.kode_ruang = tb_pinjamruang.kode_ruang',
+                'left'
+            );
+
+        $search = trim($search);
+
+        $kodeDinas = trim($kodeDinas);
+
+        if($kodeDinas !== ''){
+            $builder->where('tb_pinjamruang.kode_dinas', $kodeDinas);
+        }
+
+        if ($search !== '') {
+            $builder->groupStart()
+                ->like('tb_pinjamruang.nopinjam', $search)
+                ->orLike('tb_pinjamruang.namaorganisasi', $search)
+                ->orLike('tb_pinjamruang.namapeminjam', $search)
+                ->orLike('ms_ruang.nama_ruang', $search)
+                ->groupEnd();
+        }
+
+        return $builder;
+    }
+
+    public function countAll(string $kodeDinas = ''): int
+    {
+        return $this->baseQuery($kodeDinas)->countAllResults();
+    }
+
+    public function countFiltered(string $kodeDinas = '', string $search): int
+    {
+        return $this->baseQuery($kodeDinas, $search)->countAllResults();
+    }
+
+    public function getPage(
+        string $search,
+        int $limit = 10,
+        int $offset = 0,
+        string $orderBy = 'tglpinjam',
+        string $orderDir = 'DESC',
+        string $kodeDinas = ''
+    ): array {
+        $allowedOrder = [
+            'tglpinjam'
+        ];
+
+        $orderBy = in_array($orderBy, $allowedOrder, true)
+            ? $orderBy
+            : 'tglpinjam';
+
+        $orderDir = strtoupper($orderDir) === 'DESC'
+            ? 'DESC'
+            : 'ASC';
+
+        return $this->baseQuery($kodeDinas, $search)
+            ->orderBy($orderBy, $orderDir)
+            ->limit($limit, $offset)
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getAll(): array
+    {
+        return $this->baseQuery()
+            ->orderBy('tb_pinjamruang.tglpinjam', 'DESC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getById(int $id): ?array
+    {
+        return $this->baseQuery()
+            ->where('tb_pinjamruang.id', $id)
+            ->get()
+            ->getRowArray() ?: null;
+    }
+
+    public function getTimelineByRange(string $mulai, string $selesai, string $kodeRuang = '', ?int $excludeId = null): array
+    {
+        return $this->baseQuery()
+            ->select([
+                'tb_pinjamruang.id',
+                'tb_pinjamruang.nopinjam',
+                'tb_pinjamruang.namapeminjam',
+                'tb_pinjamruang.acara',
+                'tb_pinjamruang.tgljamacaramulai',
+                'tb_pinjamruang.tgljamacaraselesai',
+                'tb_pinjamruang.isverifikasi',
+                'ms_ruang.nama_ruang'
+            ])
+            ->where('tb_pinjamruang.tgljamacaramulai <=', $selesai)
+            ->where('tb_pinjamruang.tgljamacaraselesai >=', $mulai)
+            ->where('tb_pinjamruang.kode_ruang', $kodeRuang)
+            ->groupStart()
+                ->where('tb_pinjamruang.isverifikasi', 1)
+                ->orWhere('tb_pinjamruang.isverifikasi IS NULL', null, false)
+            ->groupEnd()
+            ->when($excludeId, static function ($query) use ($excludeId) {
+                $query->where('tb_pinjamruang.id !=', $excludeId);
+            })
+            ->orderBy('tb_pinjamruang.tgljamacaramulai', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function hasConflict(string $mulai, string $selesai, string $kodeRuang, ?int $excludeId = null): bool
+    {
+        $query = $this->builder()
+            ->select('id')
+            ->where('kode_ruang', $kodeRuang)
+            ->where('tgljamacaramulai <=', $selesai)
+            ->where('tgljamacaraselesai >=', $mulai)
+            ->groupStart()
+                ->where('isverifikasi', 1)
+                ->orWhere('isverifikasi IS NULL', null, false)
+            ->groupEnd();
+
+        if ($excludeId) {
+            $query->where('id !=', $excludeId);
+        }
+
+        return $query->countAllResults() > 0;
+    }
+}
