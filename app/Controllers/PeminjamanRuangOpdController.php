@@ -64,7 +64,7 @@ class PeminjamanRuangOpdController extends BaseController
 
                 $isVerifikasi = $r['isverifikasi'];
 
-                $status = '<span class="badge rounded-pill bg-label-info">Menunggu Verifikasi</span>';
+                $status = '<span class="badge rounded-pill bg-label-info">Belum Verifikasi</span>';
 
                 $btn = '<div class="user-table-actions">
                             <a href="' . base_url('peminjaman-ruang-opd/edit/' . $r['id']) . '" class="btn btn-xs btn-outline-warning" title="Edit" aria-label="Edit">
@@ -117,7 +117,7 @@ class PeminjamanRuangOpdController extends BaseController
                     'nama_peminjam' => $r['namapeminjam'] ?? '-',
                     'nama_ruang' => $r['nama_ruang'] ?? '-',
                     'acara' => $acara,
-                    'harga_pinjam' => $r['hargasewa'] ?? '0',
+                    'harga_pinjam' => 'Rp ' . number_format($r['hargasewa'] ?? '0', 0, ',', '.'),
                     'status' => $status,
                     'action' => $btn,
                 ];
@@ -210,6 +210,8 @@ class PeminjamanRuangOpdController extends BaseController
             ]);
         }
 
+        $durasiSewa = $this->hitungDurasiSewa($mulai, $selesai);
+
         $db = \Config\Database::connect();
         $movedFile = null;
         $roomLockAcquired = false;
@@ -292,7 +294,7 @@ class PeminjamanRuangOpdController extends BaseController
                 'isverifikasi' => null,
                 'wasatuhari' => 0,
                 'waduajam' => 0,
-                'durasisewa' => 0,
+                'durasisewa' => $durasiSewa,
                 'hargasewa' => 0,
                 'totalhargasewa' => 0,
                 'username' => user()->username ?? null,
@@ -401,6 +403,8 @@ class PeminjamanRuangOpdController extends BaseController
         if (strtotime($selesai) < strtotime($mulai))
             return redirect()->back()->withInput()->with('errors', ['general' => 'Rentang tanggal tidak valid.']);
 
+        $durasiSewa = $this->hitungDurasiSewa($mulai, $selesai);
+
         $db = \Config\Database::connect();
         $lockName = 'pinjamruang:' . md5($kode);
         $db->transBegin();
@@ -443,6 +447,7 @@ class PeminjamanRuangOpdController extends BaseController
                 'acara'                => trim((string) $this->request->getPost('acara')),
                 'tgljamacaramulai'     => $mulai,
                 'tgljamacaraselesai'   => $selesai,
+                'durasisewa'           => $durasiSewa,
                 'kode_ruang'           => $kode,
                 'updated_at'           => $now,
                 'updated_by'           => $this->userId,
@@ -543,6 +548,19 @@ class PeminjamanRuangOpdController extends BaseController
         }
     }
 
+
+    /**
+     * Menghitung durasi sewa berdasarkan hari kalender secara inklusif.
+     */
+    private function hitungDurasiSewa(string $mulai, string $selesai): int
+    {
+        $tanggalMulai = new \DateTimeImmutable($mulai);
+        $tanggalSelesai = new \DateTimeImmutable($selesai);
+
+        return (int) $tanggalMulai->setTime(0, 0)->diff(
+            $tanggalSelesai->setTime(0, 0)
+        )->days + 1;
+    }
 
     private function parseNumber($value)
     {

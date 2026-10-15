@@ -59,7 +59,7 @@ class PeminjamanRuang extends Model
         'updated_by'
     ];
 
-    private function baseQuery(string $kodeDinas = '', string $search = '')
+    private function baseQuery(string $kodeDinas = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '')
     {
         $builder = $this->builder();
         $builder
@@ -89,6 +89,25 @@ class PeminjamanRuang extends Model
             $builder->where('tb_pinjamruang.kode_dinas', $kodeDinas);
         }
 
+        if ($tanggalMulai !== '') {
+            $builder->where('tb_pinjamruang.tglpinjam >=', $tanggalMulai . ' 00:00:00');
+        }
+
+        if ($tanggalSelesai !== '') {
+            $builder->where('tb_pinjamruang.tglpinjam <=', $tanggalSelesai . ' 23:59:59');
+        }
+
+        if (in_array($status, ['pending'], true)) {
+            // Kosong berarti belum diverifikasi: NULL atau string kosong.
+            $builder->where(
+                '(tb_pinjamruang.isverifikasi IS NULL)',
+                null,
+                false
+            );
+        } elseif (in_array($status, ['0', '1'], true)) {
+            $builder->where('tb_pinjamruang.isverifikasi', $status);
+        }
+
         if ($search !== '') {
             $builder->groupStart()
                 ->like('tb_pinjamruang.nopinjam', $search)
@@ -101,14 +120,14 @@ class PeminjamanRuang extends Model
         return $builder;
     }
 
-    public function countAll(string $kodeDinas = ''): int
+    public function countAll(string $kodeDinas = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
     {
-        return $this->baseQuery($kodeDinas)->countAllResults();
+        return $this->baseQuery($kodeDinas, '', $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
     }
 
-    public function countFiltered(string $kodeDinas = '', string $search): int
+    public function countFiltered(string $kodeDinas = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
     {
-        return $this->baseQuery($kodeDinas, $search)->countAllResults();
+        return $this->baseQuery($kodeDinas, $search, $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
     }
 
     public function getPage(
@@ -117,7 +136,10 @@ class PeminjamanRuang extends Model
         int $offset = 0,
         string $orderBy = 'tglpinjam',
         string $orderDir = 'DESC',
-        string $kodeDinas = ''
+        string $kodeDinas = '',
+        string $tanggalMulai = '',
+        string $tanggalSelesai = '',
+        string $status = ''
     ): array {
         $allowedOrder = [
             'tglpinjam'
@@ -131,7 +153,7 @@ class PeminjamanRuang extends Model
             ? 'DESC'
             : 'ASC';
 
-        return $this->baseQuery($kodeDinas, $search)
+        return $this->baseQuery($kodeDinas, $search, $tanggalMulai, $tanggalSelesai, $status)
             ->orderBy($orderBy, $orderDir)
             ->limit($limit, $offset)
             ->get()
