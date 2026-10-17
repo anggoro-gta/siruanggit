@@ -22,9 +22,20 @@
     <div class="card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h5 class="card-title mb-0"><?= esc($title) ?></h5>
-            <a href="<?= base_url('peminjaman-ruang-opd') ?>" class="btn btn-secondary">
-                <i class="bx bx-arrow-back me-1"></i> Kembali
-            </a>
+            <div>
+                <?php
+                    if($row['isverifikasi'] === '1') {
+                ?>
+                <a href="<?= base_url('peminjaman-ruang-opd/cetak/' . $row['id']) ?>" class="btn btn-warning" target="_blank" rel="noopener">
+                    <i class="bx bx-printer me-1"></i> Cetak Bukti Pemesanan
+                </a>
+                <?php
+                    }
+                ?>
+                <a href="<?= base_url('peminjaman-ruang-opd') ?>" class="btn btn-secondary">
+                    <i class="bx bx-arrow-back me-1"></i> Kembali
+                </a>
+            </div>
         </div>
         <div class="card-body">
             <div class="row">

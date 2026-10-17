@@ -55,10 +55,14 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Transaksi</span>
         </li>
+        <?php $jumlahBelumVerifikasi = (new \App\Models\PeminjamanRuang())->countBelumVerifikasi(); ?>
         <li class="menu-item active-menu-verifikasi-peminjaman-ruang">
             <a href="<?= base_url('verifikasi-peminjaman-ruang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-pencil"></i>
                 <div data-i18n="Analytics">Verif. Pinjam Ruang</div>
+                <?php if ($jumlahBelumVerifikasi > 0) : ?>
+                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20 ms-1"><?= $jumlahBelumVerifikasi ?></span>
+                <?php endif; ?>
             </a>
         </li> 
         <li class="menu-item">

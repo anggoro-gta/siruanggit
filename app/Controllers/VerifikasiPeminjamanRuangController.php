@@ -16,7 +16,7 @@ class VerifikasiPeminjamanRuangController extends BaseController
     {
         $this->pinjam_ruang = new PeminjamanRuang();
         $this->ruang = new Ruang();
-        $this->userId = user()->id ?? null;
+        $this->userId = function_exists('user') ? (user()->id ?? null) : null;
     }
 
     public function index(): string
@@ -80,6 +80,14 @@ class VerifikasiPeminjamanRuangController extends BaseController
 
                 if ($isVerifikasi === '1') {
                     $status = '<span class="badge rounded-pill bg-label-success">Disetujui</span>';
+                    $btn = '<div class="user-table-actions">
+                            <a href="' . base_url('verifikasi-peminjaman-ruang/detail/' . $r['id']) . '" class="btn btn-xs btn-outline-info" title="Detail" aria-label="Detail">
+                                <i class="bx bx-detail"></i>
+                            </a>
+                            <a href="' . base_url('verifikasi-peminjaman-ruang/cetak/' . $r['id']) . '" class="btn btn-xs btn-outline-warning" title="Cetak" aria-label="Cetak" target="_blank">
+                                <i class="bx bx-printer"></i>
+                            </a>
+                        </div>';
                 } else if ($isVerifikasi === '0') {
                     $status = '<span class="badge rounded-pill bg-label-danger">Ditolak</span>';
                 }
@@ -156,6 +164,79 @@ class VerifikasiPeminjamanRuangController extends BaseController
             'title' => 'Detail Peminjaman Ruang',
             'row' => $row
         ]);
+    }
+
+    public function cetak($id)
+    {
+        $row = $this->pinjam_ruang->getById((int) $id);
+
+        if (!$row || (string) $row['isverifikasi'] !== '1') {
+            return redirect()->back()->with('error', 'Bukti pemesanan hanya tersedia untuk pemesanan yang disetujui.');
+        }
+
+        $html = view('peminjaman-ruangan/admin/cetak', [
+            'row' => $row,
+            'ketentuan' => (new \App\Models\Ketentuan())->getAll(),
+            'qrCode' => $this->createBookingQrCode($row),
+        ]);
+
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->loadHtml($html, 'UTF-8');
+        $dompdf->render();
+
+        return $this->response
+            ->setContentType('application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="bukti-pemesanan-' . ($row['nopinjam'] ?: $row['id']) . '.pdf"')
+            ->setBody($dompdf->output());
+    }
+
+    private function createBookingQrCode(array $row): string
+    {
+        $writer = new \Endroid\QrCode\Writer\PngWriter();
+        $qrCode = new \Endroid\QrCode\QrCode(
+            data: base_url('bukti-pemesanan/' . $this->encryptBookingId((int) $row['id'])),
+            size: 180,
+            margin: 8
+        );
+
+        return $writer->write($qrCode)->getDataUri();
+    }
+
+    public function publik($token)
+    {
+        $id = $this->decryptBookingId((string) $token);
+        $row = $id ? $this->pinjam_ruang->getById($id) : null;
+
+        if (!$row || (string) $row['isverifikasi'] !== '1') {
+            return view('peminjaman-ruangan/public/tidak-ditemukan');
+        }
+
+        return view('peminjaman-ruangan/public/bukti', [
+            'row' => $row,
+            'ketentuan' => (new \App\Models\Ketentuan())->getAll(),
+        ]);
+    }
+
+    private function encryptBookingId(int $id): string
+    {
+        $encrypted = service('encrypter')->encrypt((string) $id);
+
+        return rtrim(strtr(base64_encode($encrypted), '+/', '-_'), '=');
+    }
+
+    private function decryptBookingId(string $token): ?int
+    {
+        try {
+            $padding = strlen($token) % 4;
+            $encoded = strtr($token . ($padding ? str_repeat('=', 4 - $padding) : ''), '-_', '+/');
+            $decrypted = service('encrypter')->decrypt(base64_decode($encoded, true));
+            $id = filter_var($decrypted, FILTER_VALIDATE_INT);
+
+            return $id && $id > 0 ? $id : null;
+        } catch (\Throwable $exception) {
+            return null;
+        }
     }
 
     public function update()

@@ -73,12 +73,20 @@ class PeminjamanRuang extends Model
                 'ms_ruang.fasilitas',
                 'ms_ruang.peruntukan',
                 'ms_ruang.namapj AS namapj_ruang',
-                'ms_ruang.telppj AS telppj_ruang'
+                'ms_ruang.telppj AS telppj_ruang',
+                'users.alamat AS alamat_organisasi',
+                'users.nip AS nip'
             ])
             ->join(
                 'ms_ruang',
-                'ms_ruang.kode_ruang = tb_pinjamruang.kode_ruang',
-                'left'
+                'ms_ruang.kode_ruang COLLATE utf8mb4_general_ci = tb_pinjamruang.kode_ruang COLLATE utf8mb4_general_ci',
+                'left',
+                false
+            )->join(
+                'users',
+                'users.kode_dinas COLLATE utf8mb4_general_ci = tb_pinjamruang.kode_dinas COLLATE utf8mb4_general_ci',
+                'left',
+                false
             );
 
         $search = trim($search);
@@ -128,6 +136,13 @@ class PeminjamanRuang extends Model
     public function countFiltered(string $kodeDinas = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
     {
         return $this->baseQuery($kodeDinas, $search, $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
+    }
+
+    public function countBelumVerifikasi(): int
+    {
+        return $this->builder()
+            ->where('isverifikasi IS NULL', null, false)
+            ->countAllResults();
     }
 
     public function getPage(

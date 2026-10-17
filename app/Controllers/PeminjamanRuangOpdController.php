@@ -378,6 +378,51 @@ class PeminjamanRuangOpdController extends BaseController
         ]);
     }
 
+    
+    public function cetak($id)
+    {
+        $row = $this->pinjam_ruang->getById((int) $id);
+
+        if (!$row || (string) $row['isverifikasi'] !== '1') {
+            return redirect()->back()->with('error', 'Bukti pemesanan hanya tersedia untuk pemesanan yang disetujui.');
+        }
+
+        $html = view('peminjaman-ruangan/admin/cetak', [
+            'row' => $row,
+            'ketentuan' => $this->ketentuan->getAll(),
+            'qrCode' => $this->createBookingQrCode($row),
+        ]);
+
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->loadHtml($html, 'UTF-8');
+        $dompdf->render();
+
+        return $this->response
+            ->setContentType('application/pdf')
+            ->setHeader('Content-Disposition', 'inline; filename="bukti-pemesanan-' . ($row['nopinjam'] ?: $row['id']) . '.pdf"')
+            ->setBody($dompdf->output());
+    }
+
+    private function createBookingQrCode(array $row): string
+    {
+        $writer = new \Endroid\QrCode\Writer\PngWriter();
+        $qrCode = new \Endroid\QrCode\QrCode(
+            data: base_url('bukti-pemesanan/' . $this->encryptBookingId((int) $row['id'])),
+            size: 180,
+            margin: 8
+        );
+
+        return $writer->write($qrCode)->getDataUri();
+    }
+
+    private function encryptBookingId(int $id): string
+    {
+        $encrypted = service('encrypter')->encrypt((string) $id);
+
+        return rtrim(strtr(base64_encode($encrypted), '+/', '-_'), '=');
+    }
+
     public function update()
     {
         $id = (int) $this->request->getPost('id');

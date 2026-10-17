@@ -79,9 +79,14 @@ $routes->get('/peminjaman-ruang-opd/edit/(:num)', 'PeminjamanRuangOpdController:
 $routes->get('/peminjaman-ruang-opd/detail/(:num)', 'PeminjamanRuangOpdController::detail/$1', ['filter' => 'role:useropd']);
 $routes->post('/peminjaman-ruang-opd/update', 'PeminjamanRuangOpdController::update', ['filter' => 'role:useropd']);
 $routes->get('/peminjaman-ruang-opd/delete/(:num)', 'PeminjamanRuangOpdController::delete/$1', ['filter' => 'role:useropd']);
+$routes->get('/peminjaman-ruang-opd/cetak/(:num)', 'PeminjamanRuangOpdController::cetak/$1', ['filter' => 'role:useropd']);
 
 // verifikasi-peminjaman-ruang
 $routes->get('/verifikasi-peminjaman-ruang', 'VerifikasiPeminjamanRuangController::index', ['filter' => 'role:admin']);
 $routes->match(['get', 'post'], '/verifikasi-peminjaman-ruang/data', 'VerifikasiPeminjamanRuangController::getData', ['filter' => 'role:admin']);
 $routes->get('/verifikasi-peminjaman-ruang/detail/(:num)', 'VerifikasiPeminjamanRuangController::detail/$1', ['filter' => 'role:admin']);
+$routes->get('/verifikasi-peminjaman-ruang/cetak/(:num)', 'VerifikasiPeminjamanRuangController::cetak/$1', ['filter' => 'role:admin']);
 $routes->post('/verifikasi-peminjaman-ruang/update', 'VerifikasiPeminjamanRuangController::update', ['filter' => 'role:admin']);
+
+// Halaman publik untuk verifikasi bukti pemesanan melalui QR Code.
+$routes->get('/bukti-pemesanan/(:any)', 'VerifikasiPeminjamanRuangController::publik/$1');
