@@ -58,6 +58,35 @@
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="<?= base_url() ?>/assets/css/demo.css" />
+    <style>
+        .badge-menu-count {
+            min-width: 18px;
+            height: 18px;
+            padding: 0 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-size: .6rem;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-link {
+            position: relative;
+        }
+
+        .menu-link > div[data-i18n] {
+            min-width: 0;
+            max-width: calc(100% - 26px);
+            overflow: hidden;
+            padding-right: 2px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />

@@ -7,6 +7,7 @@ use App\Models\TentangKami;
 use App\Models\Pertanyaan;
 use App\Models\KontakKami;
 use App\Models\Ruang;
+use App\Models\PeminjamanRuang;
 
 class Landing extends BaseController
 {
@@ -16,6 +17,7 @@ class Landing extends BaseController
     protected $pertanyaan;
     protected $kontakkami;
     protected $ruang;
+    protected $peminjamanRuang;
 
     public function __construct()
     {
@@ -24,6 +26,7 @@ class Landing extends BaseController
         $this->pertanyaan = new Pertanyaan();
         $this->kontakkami = new KontakKami();
         $this->ruang = new Ruang();
+        $this->peminjamanRuang = new PeminjamanRuang();
     }
 
     public function index(): string
@@ -33,6 +36,7 @@ class Landing extends BaseController
         $getpertanyaan = $this->pertanyaan->getAll();    
         $getkontakkami = $this->kontakkami->getAll();
         $getruang = $this->ruang->getAll();
+        $getjadwal = $this->peminjamanRuang->getPublicCalendarEvents();
 
         $dataRuangan = [];
 
@@ -70,6 +74,7 @@ class Landing extends BaseController
             'kontakkamidata' => $getkontakkami,
             'ruangdata'    => $getruang,
             'dataRuangan'  => $dataRuangan,
+            'jadwaldata'   => $getjadwal,
         ];
 
         return view('landing/index', $data);

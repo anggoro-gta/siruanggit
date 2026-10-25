@@ -557,40 +557,62 @@
         editable: false,        // Set true jika ingin drag-and-drop
         selectable: false,      // Set true jika ingin memilih area tanggal
         dayMaxEvents: true,     // Tampilkan "+more" jika event terlalu banyak dalam 1 hari
+        displayEventTime: true,
+        eventTimeFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        },
 
-        // Data Jadwal (Events)
-        events: [
-          {
-            id: '1',
-            title: 'Bagian Umum - Rapat Koordinasi',
-            start: '2026-08-01T09:00:00',
-            end: '2026-08-01T11:00:00',
-            backgroundColor: '#f59e0b',
-            borderColor: '#d97706'
-          },
-          {
-            id: '2',
-            title: 'Peminjaman Ruang Utama',
-            start: '2026-08-05',
-            allDay: true, // Untuk acara seharian penuh
-            backgroundColor: '#3b82f6',
-            borderColor: '#2563eb'
-          },
-          {
-            id: '3',
-            title: 'Rapat Dinas Pendidikan',
-            start: '2026-08-14T07:00:00',
-            backgroundColor: '#10b981',
-            borderColor: '#059669'
-          }
-        ],
+        events: <?= json_encode(array_map(static function (array $jadwal): array {
+          $warna = [
+            ['backgroundColor' => '#2563eb', 'borderColor' => '#1d4ed8'],
+            ['backgroundColor' => '#16a34a', 'borderColor' => '#15803d'],
+            ['backgroundColor' => '#ea580c', 'borderColor' => '#c2410c'],
+            ['backgroundColor' => '#9333ea', 'borderColor' => '#7e22ce'],
+            ['backgroundColor' => '#0891b2', 'borderColor' => '#0e7490'],
+            ['backgroundColor' => '#db2777', 'borderColor' => '#be185d'],
+          ][((int) $jadwal['id']) % 6];
+
+          $mulai = !empty($jadwal['tgljamacaramulai'])
+            ? date('Y-m-d\TH:i:s', strtotime($jadwal['tgljamacaramulai']))
+            : null;
+          $selesai = !empty($jadwal['tgljamacaraselesai'])
+            ? date('Y-m-d\TH:i:s', strtotime($jadwal['tgljamacaraselesai']))
+            : null;
+          $acara = trim((string) ($jadwal['acara'] ?? '-'));
+          $ruang = trim((string) ($jadwal['nama_ruang'] ?? ''));
+          $namaorganisasi = trim((string) ($jadwal['namaorganisasi'] ?? ''));
+
+          return [
+            'id' => (string) $jadwal['id'],
+            'title' => $namaorganisasi,
+            'namaorganisasi' => $namaorganisasi,
+            'acara' => $acara,
+            'ruang' => $ruang,
+            'start' => $mulai,
+            'end' => $selesai,
+            'backgroundColor' => $warna['backgroundColor'],
+            'borderColor' => $warna['borderColor'],
+          ];
+        }, $jadwaldata ?? []), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
 
         // Handler saat Event diklik
         eventClick: function(info) {
           // Format tanggal & waktu agar rapi
-          const startDate = info.event.start ? info.event.start.toLocaleDateString('id-ID', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-          }) : '-';
+          const formatTanggal = (tanggal, tampilkanTahun = true) => tanggal.toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            ...(tampilkanTahun ? { year: 'numeric' } : {})
+          });
+
+          const startDate = info.event.start ? formatTanggal(info.event.start) : '-';
+          const endDate = info.event.end ? formatTanggal(info.event.end) : startDate;
+          const tanggalSama = info.event.start && info.event.end
+            && info.event.start.toDateString() === info.event.end.toDateString();
+          const tanggalString = tanggalSama
+            ? startDate
+            : `${formatTanggal(info.event.start, info.event.start.getFullYear() === info.event.end?.getFullYear())} - ${endDate}`;
 
           const startTime = info.event.start ? info.event.start.toLocaleTimeString('id-ID', {
             hour: '2-digit', minute: '2-digit'
@@ -604,23 +626,48 @@
             ? 'Seharian Penuh' 
             : `${startTime} - ${endTime} WIB`;
 
+          const jadwalString = info.event.allDay
+            ? tanggalString
+            : tanggalSama
+              ? `${startDate} | ${startTime} - ${endTime} WIB`
+              : `${startDate} | ${startTime} - ${endDate} | ${endTime} WIB`;
+
           // Tampilkan SweetAlert2 Popup
+          const namaOrganisasi = info.event.extendedProps.namaorganisasi || '-';
+          const acara = info.event.extendedProps.acara || '-';
+          const ruang = info.event.extendedProps.ruang || 'Ruang tidak tersedia';
+
           Swal.fire({
             title: `<span style="color: #1e293b; font-size: 20px;">Detail Peminjaman</span>`,
             html: `
               <div style="text-align: left; font-family: Arial, sans-serif; line-height: 1.6; padding: 10px;">
                 <div style="margin-bottom: 12px;">
-                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Nama Kegiatan / Ruang:</strong>
-                  <span style="font-size: 16px; font-weight: bold; color: #0f172a;">${info.event.title}</span>
-                </div>
-                
-                <div style="margin-bottom: 12px;">
-                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Tanggal:</strong>
-                  <span style="font-size: 14px; color: #334155;">📅 ${startDate}</span>
+                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Organisasi:</strong>
+                  <span style="font-size: 16px; font-weight: bold; color: #0f172a;">${namaOrganisasi}</span>
                 </div>
 
                 <div style="margin-bottom: 12px;">
-                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Waktu:</strong>
+                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Perihal Acara:</strong>
+                  <span style="font-size: 14px; color: #334155;">${acara}</span>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Ruang:</strong>
+                  <span style="font-size: 14px; color: #334155;">${ruang}</span>
+                </div>
+                
+                <div style="margin-bottom: 12px;">
+                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Jadwal:</strong>
+                  <span style="font-size: 14px; color: #334155;">📅 ${jadwalString}</span>
+                </div>
+
+                <div style="margin-bottom: 12px; display: none;">
+                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Jadwal (tanggal):</strong>
+                  <span style="font-size: 14px; color: #334155;">📅 ${tanggalString}</span>
+                </div>
+
+                <div style="margin-bottom: 12px; display: none;">
+                  <strong style="color: #64748b; font-size: 12px; display: block; text-transform: uppercase;">Jam:</strong>
                   <span style="font-size: 14px; color: #334155;">⏰ ${timeString}</span>
                 </div>
               </div>

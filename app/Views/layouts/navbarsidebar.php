@@ -61,7 +61,9 @@
                 <i class="menu-icon tf-icons bx bx-pencil"></i>
                 <div data-i18n="Analytics">Verif. Pinjam Ruang</div>
                 <?php if ($jumlahBelumVerifikasi > 0) : ?>
-                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20 ms-1"><?= $jumlahBelumVerifikasi ?></span>
+                    <span class="flex-shrink-0 badge rounded-pill bg-danger ms-1 badge-menu-count" title="<?= $jumlahBelumVerifikasi ?> transaksi belum diverifikasi">
+                        <?= $jumlahBelumVerifikasi > 99 ? '99+' : $jumlahBelumVerifikasi ?>
+                    </span>
                 <?php endif; ?>
             </a>
         </li> 

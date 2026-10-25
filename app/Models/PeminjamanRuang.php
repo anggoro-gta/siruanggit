@@ -198,6 +198,7 @@ class PeminjamanRuang extends Model
                 'tb_pinjamruang.id',
                 'tb_pinjamruang.nopinjam',
                 'tb_pinjamruang.namapeminjam',
+                'tb_pinjamruang.namaorganisasi',
                 'tb_pinjamruang.acara',
                 'tb_pinjamruang.tgljamacaramulai',
                 'tb_pinjamruang.tgljamacaraselesai',
@@ -214,6 +215,33 @@ class PeminjamanRuang extends Model
             ->when($excludeId, static function ($query) use ($excludeId) {
                 $query->where('tb_pinjamruang.id !=', $excludeId);
             })
+            ->orderBy('tb_pinjamruang.tgljamacaramulai', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getPublicCalendarEvents(string $mulai = '', string $selesai = ''): array
+    {
+        $query = $this->baseQuery()
+            ->select([
+                'tb_pinjamruang.id',
+                'tb_pinjamruang.acara',
+                'tb_pinjamruang.tgljamacaramulai',
+                'tb_pinjamruang.tgljamacaraselesai',
+                'tb_pinjamruang.namaorganisasi',
+                'ms_ruang.nama_ruang'
+            ])
+            ->where('tb_pinjamruang.isverifikasi', 1);
+
+        if ($mulai !== '') {
+            $query->where('tb_pinjamruang.tgljamacaramulai <=', $selesai);
+        }
+
+        if ($selesai !== '') {
+            $query->where('tb_pinjamruang.tgljamacaraselesai >=', $mulai);
+        }
+
+        return $query
             ->orderBy('tb_pinjamruang.tgljamacaramulai', 'ASC')
             ->get()
             ->getResultArray();
