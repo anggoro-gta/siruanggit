@@ -22,7 +22,7 @@
                     <p class="login-box-msg"><?= lang('Auth.loginTitle') ?></p>
 
                     <?= view('Myth\Auth\Views\_message_block') ?>
-                    <form class="mb-3" action="<?= route_to('login') ?>" method="POST">
+                    <form class="mb-3" action="<?= base_url(route_to('login')) ?>" method="POST">
                         <?= csrf_field() ?>
 
                         <?php if ($config->validFields === ['email']) : ?>
