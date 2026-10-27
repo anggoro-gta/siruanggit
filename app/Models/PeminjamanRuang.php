@@ -227,7 +227,7 @@ class PeminjamanRuang extends Model
             ->getResultArray();
     }
 
-    public function getPublicCalendarEvents(string $mulai = '', string $selesai = ''): array
+    public function getPublicCalendarEvents(string $mulai = '', string $selesai = '', string $kodeRuang = ''): array
     {
         $query = $this->baseQuery()
             ->select([
@@ -239,6 +239,10 @@ class PeminjamanRuang extends Model
                 'ms_ruang.nama_ruang'
             ])
             ->where('tb_pinjamruang.isverifikasi', 1);
+
+        if ($kodeRuang !== '') {
+            $query->where('tb_pinjamruang.kode_ruang', $kodeRuang);
+        }
 
         if ($mulai !== '') {
             $query->where('tb_pinjamruang.tgljamacaramulai <=', $selesai);

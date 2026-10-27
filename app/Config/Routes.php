@@ -90,3 +90,6 @@ $routes->post('/verifikasi-peminjaman-ruang/update', 'VerifikasiPeminjamanRuangC
 
 // Halaman publik untuk verifikasi bukti pemesanan melalui QR Code.
 $routes->get('/bukti-pemesanan/(:any)', 'VerifikasiPeminjamanRuangController::publik/$1');
+
+// kalender-pinjam-ruang
+$routes->get('/kalender-pinjam-ruang', 'KalenderPinjamRuangController::index/$1', ['filter' => 'role:admin,useropd']);

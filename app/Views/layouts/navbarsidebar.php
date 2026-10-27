@@ -73,8 +73,8 @@
                 <div data-i18n="Analytics">Verif. Pembayaran</div>
             </a>
         </li>   
-        <li class="menu-item">
-            <a href="/" class="menu-link">
+        <li class="menu-item active-menu-kalender-pinjam-ruang">
+            <a href="<?= base_url('kalender-pinjam-ruang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>
                 <div data-i18n="Analytics">Kalender Pinjam Ruang</div>
             </a>
