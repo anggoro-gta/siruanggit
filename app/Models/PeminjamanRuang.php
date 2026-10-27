@@ -59,7 +59,7 @@ class PeminjamanRuang extends Model
         'updated_by'
     ];
 
-    private function baseQuery(string $kodeDinas = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '')
+    private function baseQuery(string $kodeDinas = '', string $userId = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '')
     {
         $builder = $this->builder();
         $builder
@@ -92,9 +92,15 @@ class PeminjamanRuang extends Model
         $search = trim($search);
 
         $kodeDinas = trim($kodeDinas);
+        
+        $userId = trim($userId);
 
         if($kodeDinas !== ''){
             $builder->where('tb_pinjamruang.kode_dinas', $kodeDinas);
+        }
+
+        if($userId !== ''){
+            $builder->orWhere('tb_pinjamruang.created_by', $userId);
         }
 
         if ($tanggalMulai !== '') {
@@ -128,14 +134,14 @@ class PeminjamanRuang extends Model
         return $builder;
     }
 
-    public function countAll(string $kodeDinas = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
+    public function countAll(string $kodeDinas = '', string $userId = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
     {
-        return $this->baseQuery($kodeDinas, '', $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
+        return $this->baseQuery($kodeDinas, $userId = '', '', $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
     }
 
-    public function countFiltered(string $kodeDinas = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
+    public function countFiltered(string $kodeDinas = '', string $userId = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
     {
-        return $this->baseQuery($kodeDinas, $search, $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
+        return $this->baseQuery($kodeDinas, $userId, $search, $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
     }
 
     public function countBelumVerifikasi(): int
@@ -152,6 +158,7 @@ class PeminjamanRuang extends Model
         string $orderBy = 'tglpinjam',
         string $orderDir = 'DESC',
         string $kodeDinas = '',
+        string $userId = '',
         string $tanggalMulai = '',
         string $tanggalSelesai = '',
         string $status = ''
@@ -168,7 +175,7 @@ class PeminjamanRuang extends Model
             ? 'DESC'
             : 'ASC';
 
-        return $this->baseQuery($kodeDinas, $search, $tanggalMulai, $tanggalSelesai, $status)
+        return $this->baseQuery($kodeDinas, $userId, $search, $tanggalMulai, $tanggalSelesai, $status)
             ->orderBy($orderBy, $orderDir)
             ->limit($limit, $offset)
             ->get()

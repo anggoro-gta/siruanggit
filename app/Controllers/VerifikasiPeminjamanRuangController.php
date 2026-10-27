@@ -61,9 +61,9 @@ class VerifikasiPeminjamanRuangController extends BaseController
                 'tglpinjam' => 'tglpinjam'
             ][$orderBy] ?? 'id';
 
-            $recordsTotal = $this->pinjam_ruang->countAll('', $tanggalMulai, $tanggalSelesai, $status);
-            $recordsFiltered = $this->pinjam_ruang->countFiltered('', $search, $tanggalMulai, $tanggalSelesai, $status);
-            $rows = $this->pinjam_ruang->getPage($search, $length, $start, $orderBy, $orderDir, '', $tanggalMulai, $tanggalSelesai, $status);
+            $recordsTotal = $this->pinjam_ruang->countAll('', '', $tanggalMulai, $tanggalSelesai, $status);
+            $recordsFiltered = $this->pinjam_ruang->countFiltered('', '', $search, $tanggalMulai, $tanggalSelesai, $status);
+            $rows = $this->pinjam_ruang->getPage($search, $length, $start, $orderBy, $orderDir, '', '', $tanggalMulai, $tanggalSelesai, $status);
 
             $data = [];
             foreach ($rows as $r) {

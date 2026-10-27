@@ -55,9 +55,9 @@ class PeminjamanRuangOpdController extends BaseController
                 'tglpinjam' => 'tglpinjam'
             ][$orderBy] ?? 'id';
 
-            $recordsTotal = $this->pinjam_ruang->countAll($this->kodeDinas);
-            $recordsFiltered = $this->pinjam_ruang->countFiltered($this->kodeDinas, $search);
-            $rows = $this->pinjam_ruang->getPage($search, $length, $start, $orderBy, $orderDir, $this->kodeDinas);
+            $recordsTotal = $this->pinjam_ruang->countAll($this->kodeDinas, $this->userId);
+            $recordsFiltered = $this->pinjam_ruang->countFiltered($this->kodeDinas, $this->userId, $search);
+            $rows = $this->pinjam_ruang->getPage($search, $length, $start, $orderBy, $orderDir, $this->kodeDinas, $this->userId);
 
             $data = [];
             foreach ($rows as $r) {
