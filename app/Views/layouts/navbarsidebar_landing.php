@@ -1,7 +1,7 @@
 <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+      <a href="#" class="logo d-flex align-items-center me-auto me-xl-0">
 
             <img src="<?= base_url('landing/assets/') ?>img/kediri.png" alt="">
 
@@ -24,7 +24,7 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="/home">Login <i class="bi bi-box-arrow-in-right"></i></a>
+      <a class="btn-getstarted" href="<?= base_url('/home') ?>">Login <i class="bi bi-box-arrow-in-right"></i></a>
 
     </div>
   </header>
