@@ -29,16 +29,16 @@
         </li>
         <li class="menu-item active-menu-peminjaman-ruang-opd">
             <a href="<?= base_url('peminjaman-ruang-opd') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-table"></i>
+                <i class="menu-icon tf-icons bx bx-pencil"></i>
                 <div data-i18n="Analytics">Peminjaman Ruang</div>
             </a>
         </li> 
-        <li class="menu-item active-menu-user">
+        <!-- <li class="menu-item active-menu-user">
             <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-pencil"></i>
                 <div data-i18n="Analytics">Pengajuan Peminjaman</div>
             </a>
-        </li>
+        </li> -->
         <li class="menu-item active-menu-kalender-pinjam-ruang">
             <a href="<?= base_url('kalender-pinjam-ruang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>
