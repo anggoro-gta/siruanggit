@@ -866,4 +866,133 @@ class UserController extends BaseController
                 );
         }
     }
+
+    public function resetPassword($id)
+    {
+        $db  = \Config\Database::connect();
+        $row = $this->user->getById($id);
+
+        $data = [
+            'url'             => site_url('reset-password/save'),
+            'button'          => 'Simpan Perubahan',
+            'title'           => 'Reset Password',
+            'id'              => old('id', $row['id']),
+            'password_baru'   => old('password_baru'),
+            'ulangi_password' => old('ulangi_password'),
+        ];
+
+        return view('user/form-reset-password', $data);
+    }
+
+    public function resetPasswordSave()
+    {
+        $id = (int) $this->request->getPost('id');
+
+        if ($id <= 0) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', [
+                    'general' => 'ID pengguna tidak valid.',
+                ]);
+        }
+
+        $rules = [
+            'password_baru' => [
+                'label' => 'Password Baru',
+                'rules' => 'required|min_length[8]',
+                'errors' => [
+                    'required'   => '{field} wajib diisi.',
+                    'min_length' => '{field} minimal 8 karakter.',
+                ],
+            ],
+            'ulangi_password' => [
+                'label' => 'Ulangi Password Baru',
+                'rules' => 'required|min_length[8]|matches[password_baru]',
+                'errors' => [
+                    'required'   => '{field} wajib diisi.',
+                    'min_length' => '{field} minimal 8 karakter.',
+                    'matches'    => 'Konfirmasi password tidak sama dengan Password Baru.',
+                ],
+            ],
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
+        }
+
+        $passwordBaru = (string) $this->request->getPost('password_baru');
+
+        $db = \Config\Database::connect();
+        $userTable = $db->table('users');
+
+        $db->transBegin();
+
+        try {
+            $existingUser = $userTable
+                ->where('id', $id)
+                ->get()
+                ->getRow();
+
+            if (!$existingUser) {
+                throw new \RuntimeException('Pengguna tidak ditemukan.');
+            }
+
+            $data = [
+                'password_hash' => Password::hash($passwordBaru),
+                'updated_at'    => date('Y-m-d H:i:s'),
+            ];
+
+            $updated = $userTable
+                ->where('id', $id)
+                ->update($data);
+
+            if (!$updated) {
+                $error = $db->error();
+
+                throw new \RuntimeException(
+                    'Gagal memperbarui password pengguna. '
+                    . ($error['code'] ?? '')
+                    . ' - '
+                    . ($error['message'] ?? '')
+                );
+            }
+
+            if ($db->transStatus() === false) {
+                throw new \RuntimeException('Transaksi database gagal.');
+            }
+
+            $db->transCommit();
+
+            return redirect()
+                ->to('/reset-password/' . $id)
+                ->with('success', 'Password berhasil direset.');
+
+        } catch (\Throwable $e) {
+            if ($db->transStatus() !== false) {
+                $db->transRollback();
+            } else {
+                $db->transRollback();
+            }
+
+            log_message(
+                'error',
+                'Reset password user ID {id} gagal: {message}',
+                [
+                    'id'      => $id,
+                    'message' => $e->getMessage(),
+                ]
+            );
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('errors', [
+                    'general' => 'Gagal mereset password. Silakan coba kembali.',
+                ]);
+        }
+    }
 }

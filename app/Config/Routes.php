@@ -23,6 +23,10 @@ $routes->get('/master-user/edit/(:num)', 'UserController::edit/$1', ['filter' =>
 $routes->post('/master-user/update', 'UserController::update', ['filter' => 'role:admin']);
 $routes->get('/master-user/delete/(:num)', 'UserController::delete/$1', ['filter' => 'role:admin']);
 
+//reset-password
+$routes->get('/reset-password/(:num)', 'UserController::resetPassword/$1', ['filter' => 'role:admin,useropd']);
+$routes->post('/reset-password/save', 'UserController::resetPasswordSave', ['filter' => 'role:admin,useropd']);
+
 // master-slider
 $routes->get('/master-slider', 'SliderController::index', ['filter' => 'role:admin']);
 $routes->match(['get', 'post'], '/master-slider/data', 'SliderController::getData', ['filter' => 'role:admin']);

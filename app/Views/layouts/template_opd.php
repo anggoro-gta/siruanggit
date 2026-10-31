@@ -126,7 +126,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="<?= base_url('reset-password/'.user()->id) ?>">
                                             <i class="bx bx-key me-2"></i>
                                             <span class="align-middle">Reset Password</span>
                                         </a>

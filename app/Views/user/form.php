@@ -216,6 +216,29 @@ document.addEventListener('DOMContentLoaded', function () {
     kategori.addEventListener('change', toggleForm);
     toggleForm();
 });
+
+    document.querySelectorAll('.form-password-toggle .cursor-pointer')
+        .forEach(function (toggle) {
+
+            toggle.addEventListener('click', function () {
+
+                const wrapper = this.closest('.form-password-toggle');
+                const input = wrapper.querySelector('input');
+                const icon = this.querySelector('i');
+
+                setTimeout(function () {
+                    if (input.type === 'text') {
+                        icon.classList.remove('bx-hide');
+                        icon.classList.add('bx-show');
+                    } else {
+                        icon.classList.remove('bx-show');
+                        icon.classList.add('bx-hide');
+                    }
+                }, 0);
+
+            });
+
+        });
 </script>
 
 
