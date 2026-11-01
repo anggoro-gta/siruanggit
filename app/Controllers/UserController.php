@@ -875,7 +875,7 @@ class UserController extends BaseController
         $role = '';
 
         if (in_groups('admin')) {
-            $role = 'admin';fix
+            $role = 'admin';
         } elseif (in_groups('useropd')) {
             $role = 'useropd';
         }
