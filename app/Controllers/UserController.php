@@ -875,7 +875,7 @@ class UserController extends BaseController
         $role = '';
 
         if (in_groups('admin')) {
-            $role = 'admin';
+            $role = 'admin';fix
         } elseif (in_groups('useropd')) {
             $role = 'useropd';
         }
@@ -886,7 +886,7 @@ class UserController extends BaseController
             'title'           => 'Reset Password',
             'id'              => old('id', $row['id']),
             'password_baru'   => old('password_baru'),
-            'ulangi_password' => old('ulangi_password'),,
+            'ulangi_password' => old('ulangi_password'),
             'role'            => $role
         ];
 
