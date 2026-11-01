@@ -1,4 +1,10 @@
-<?= $this->extend('layouts/template'); ?>
+<?php
+    if($role==='admin'){
+        echo $this->extend('layouts/template');
+    }else{
+        echo $this->extend('layouts/template_opd');
+    }
+?>
 
 <?= $this->section('csskhusus'); ?>
 <style>

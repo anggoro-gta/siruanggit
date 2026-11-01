@@ -872,13 +872,22 @@ class UserController extends BaseController
         $db  = \Config\Database::connect();
         $row = $this->user->getById($id);
 
+        $role = '';
+
+        if (in_groups('admin')) {
+            $role = 'admin';
+        } elseif (in_groups('useropd')) {
+            $role = 'useropd';
+        }
+
         $data = [
             'url'             => site_url('reset-password/save'),
             'button'          => 'Simpan Perubahan',
             'title'           => 'Reset Password',
             'id'              => old('id', $row['id']),
             'password_baru'   => old('password_baru'),
-            'ulangi_password' => old('ulangi_password'),
+            'ulangi_password' => old('ulangi_password'),,
+            'role'            => $role
         ];
 
         return view('user/form-reset-password', $data);
