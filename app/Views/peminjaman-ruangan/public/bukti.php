@@ -24,7 +24,10 @@ $logo = is_file($logoPath) ? 'data:image/png;base64,' . base64_encode((string) f
         .header h1 { margin: 0 0 5px; font-size: 20px; }
         .header p { margin: 0; opacity: .85; }
         .content { padding: 24px; }
-        .status { display: inline-block; margin-bottom: 20px; padding: 7px 13px; color: #176b3a; background: #dcf7e7; border-radius: 999px; font-weight: bold; }
+        .status { display: inline-block; color: #079642; font-weight: bold; }
+        .warning { display: inline-block; color: #d49400; font-weight: bold; }
+        .primary { display: inline-block; color: #0052b7; font-weight: bold; }
+        .success { display: inline-block; color: #079642; font-weight: bold; }
         .booking { display: grid; grid-template-columns: .85fr 1fr 1.65fr; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid #e5e7eb; }
         .label { color: #6b7280; font-size: 12px; }
         .value { margin-top: 6px; font-weight: bold; line-height: 1.4; }
@@ -44,7 +47,6 @@ $logo = is_file($logoPath) ? 'data:image/png;base64,' . base64_encode((string) f
                 <div><h1>Verifikasi Bukti Pemesanan</h1><p>SiRuang · Sekretariat Daerah Kabupaten Kediri</p></div>
             </header>
             <section class="content">
-                <div class="status">✓ Pemesanan Disetujui</div>
                 <div class="booking">
                     <div><div class="label">Kode Booking</div><div class="value"><?= esc($row['nopinjam'] ?? '-') ?></div></div>
                     <div><div class="label">Ruang/Gedung</div><div class="value"><?= esc($row['nama_ruang'] ?? '-') ?></div></div>
@@ -64,6 +66,36 @@ $logo = is_file($logoPath) ? 'data:image/png;base64,' . base64_encode((string) f
                     <tr><td>Alamat Ruangan</td><td><?= esc($row['alamat_ruang'] ?? '-') ?></td></tr>
                     <tr><td>Fasilitas</td><td><?= esc($row['fasilitas'] ?? '-') ?></td></tr>
                     <tr><td>Peruntukan</td><td><?= esc(strtoupper($row['peruntukan'] ?? '-')) ?></td></tr>
+                </table>
+                <hr>
+                <table>
+                    <tr>
+                        <td>Status Pemesanan</td>
+                        <td>
+                            <div class="status">Disetujui</div>
+                        </td>
+                    </tr>
+                    <?php
+                        if (!empty($row['hargasewa']) && $row['hargasewa'] > 0) {
+                    ?>
+                    <tr>
+                        <td>Status Pembayaran</td>
+                        <td>
+                            <?php
+                                $isverifikasibayar = $row['isverifikasibayar'] ?? null;
+                                if ($isverifikasibayar === '1') {
+                                    echo '<div class="success">Sudah Bayar</div>';
+                                } elseif ($isverifikasibayar === '0') {
+                                    echo '<div class="warning">Belum Bayar</div>';
+                                } else {
+                                    echo '<div class="primary">Menunggu Diverifikasi</div>';
+                                }
+                            ?>
+                        </td>
+                    </tr>
+                    <?php
+                        }
+                    ?>
                 </table>
             </section>
             <footer class="footer">Halaman ini dapat diakses publik untuk memvalidasi keaslian bukti pemesanan.</footer>

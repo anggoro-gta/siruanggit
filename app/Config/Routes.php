@@ -84,6 +84,7 @@ $routes->get('/peminjaman-ruang-opd/detail/(:num)', 'PeminjamanRuangOpdControlle
 $routes->post('/peminjaman-ruang-opd/update', 'PeminjamanRuangOpdController::update', ['filter' => 'role:useropd']);
 $routes->get('/peminjaman-ruang-opd/delete/(:num)', 'PeminjamanRuangOpdController::delete/$1', ['filter' => 'role:useropd']);
 $routes->get('/peminjaman-ruang-opd/cetak/(:num)', 'PeminjamanRuangOpdController::cetak/$1', ['filter' => 'role:useropd']);
+$routes->post('/peminjaman-ruang-opd/bayar', 'PeminjamanRuangOpdController::pay', ['filter' => 'role:useropd']);
 
 // verifikasi-peminjaman-ruang
 $routes->get('/verifikasi-peminjaman-ruang', 'VerifikasiPeminjamanRuangController::index', ['filter' => 'role:admin']);
@@ -91,6 +92,14 @@ $routes->match(['get', 'post'], '/verifikasi-peminjaman-ruang/data', 'Verifikasi
 $routes->get('/verifikasi-peminjaman-ruang/detail/(:num)', 'VerifikasiPeminjamanRuangController::detail/$1', ['filter' => 'role:admin']);
 $routes->get('/verifikasi-peminjaman-ruang/cetak/(:num)', 'VerifikasiPeminjamanRuangController::cetak/$1', ['filter' => 'role:admin']);
 $routes->post('/verifikasi-peminjaman-ruang/update', 'VerifikasiPeminjamanRuangController::update', ['filter' => 'role:admin']);
+$routes->post('/verifikasi-peminjaman-ruang/batal', 'VerifikasiPeminjamanRuangController::cancel', ['filter' => 'role:admin']);
+
+// verifikasi-pembayaran
+$routes->get('/verifikasi-pembayaran', 'VerifikasiPembayaranController::index', ['filter' => 'role:admin']);
+$routes->match(['get', 'post'], '/verifikasi-pembayaran/data', 'VerifikasiPembayaranController::getData', ['filter' => 'role:admin']);
+$routes->get('/verifikasi-pembayaran/detail/(:num)', 'VerifikasiPembayaranController::detail/$1', ['filter' => 'role:admin']);
+$routes->post('/verifikasi-pembayaran/update', 'VerifikasiPembayaranController::update', ['filter' => 'role:admin']);
+
 
 // Halaman publik untuk verifikasi bukti pemesanan melalui QR Code.
 $routes->get('/bukti-pemesanan/(:any)', 'VerifikasiPeminjamanRuangController::publik/$1');

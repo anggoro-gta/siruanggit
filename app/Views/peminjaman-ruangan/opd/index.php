@@ -103,14 +103,16 @@
     }
 
     .user-table-actions {
-        display: inline-flex;
-        gap: .4rem;
-        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        white-space: normal;
     }
 
     .user-table-actions .btn {
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
         padding: 0;
         display: inline-flex;
         align-items: center;
@@ -162,6 +164,18 @@
         font-size: .85em;
     }
 
+    .user-table-card table.dataTable th:nth-child(6),
+    .user-table-card table.dataTable td:nth-child(6) {
+        width: 120px !important;
+        min-width: 120px !important;
+        max-width: 120px !important;
+
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.55;
+    }
+
     @media (max-width: 767.98px) {
         .user-table-card .dataTables_wrapper .dataTables_length,
         .user-table-card .dataTables_wrapper .dataTables_filter {
@@ -175,12 +189,52 @@
             width: calc(100% - 4rem);
         }
     }
+
+    #example1 tbody tr.row-dibatalkan td:not(:last-child),
+    #example1 tbody tr.row-dibatalkan td:not(:last-child) * {
+        color: #9aa1a8 !important;
+    }
+
+    #example1 tbody tr.row-dibatalkan td {
+        background-color: #f1f3f5 !important;
+    }
+
+    #example1 tbody tr.row-dibatalkan td:first-child {
+        border-left: 4px solid #adb5bd;
+    }
+
+    #example1 tbody tr.row-dibatalkan:hover td {
+        background-color: #e9ecef !important;
+    }
 </style>
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="container-xxl flex-grow-1 container-p-y">
+    <?php if (session()->has('errors')): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php foreach (session('errors') as $error): ?>
+                <div><?= esc($error) ?></div>
+            <?php endforeach; ?>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= esc(session('success')) ?>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
     <div class="card user-table-card">
         <div class="card-header d-flex align-items-center justify-content-between">
             <div>
@@ -206,6 +260,34 @@
                     </tr>
                 </thead>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Upload Bukti Bayar -->
+<div class="modal fade" id="modalUploadBuktiBayar" tabindex="-1"
+     aria-labelledby="modalUploadBuktiBayarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalUploadBuktiBayarLabel">Upload Bukti Bayar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <form id="formUploadBuktiBayar" method="POST" action="<?= base_url('peminjaman-ruang-opd/bayar') ?>" enctype="multipart/form-data">
+                <?= csrf_field() ?>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="id_peminjaman">
+                    <input type="file" name="bukti_bayar" id="bukti_bayar"
+                        class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                    <small class="text-muted">Format: JPG, JPEG, PNG, atau PDF.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bx bx-upload me-1"></i> Upload
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -248,6 +330,19 @@
             processing: true,
             serverSide: true,
             deferRender: true,
+            rowCallback: function (row, data) {
+                const status = $('<div>')
+                    .html(data.status || '')
+                    .text()
+                    .trim()
+                    .toLowerCase();
+
+                if (status.includes('dibatalkan')) {
+                    $(row).addClass('row-dibatalkan');
+                } else {
+                    $(row).removeClass('row-dibatalkan');
+                }
+            },
             order: [[1, 'desc']],
             ajax: {
                 url: "<?= base_url('peminjaman-ruang-opd/data'); ?>",
@@ -268,7 +363,7 @@
                     orderable: false,
                     searchable: false
                 },
-                { data: 'harga_pinjam', className: 'text-end'},
+                { data: 'harga_pinjam', className: 'text-end', orderable:false, searchable:false,},
                 { data: 'status', className: 'text-center', orderable:false, searchable:false,},
                 { data: 'action', orderable:false, searchable:false, className:'text-center' }
             ]
@@ -283,6 +378,14 @@
         // $('#years').on('change', () => table.ajax.reload(null, false));
 
         const valOrDash = v => (v === null || v === undefined || v === '') ? '-' : v;
+
+        $(document).on('click', '.btn-pembayaran', function () {
+            $('#id_peminjaman').val($(this).data('id'));
+            $('#bukti_bayar').val('');
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('modalUploadBuktiBayar')
+            ).show();
+        });
     });
 
     function confirmDelete(url) {

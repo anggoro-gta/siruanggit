@@ -137,7 +137,7 @@ $now = date('Y-m-d\TH:i');
                 </div>
                 <div class="card-body">
                     <?php if (!empty($errors['general'])) : ?>
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger server-error-fallback" role="alert">
                             <?= esc($errors['general']) ?>
                         </div>
                     <?php endif; ?>
@@ -552,6 +552,17 @@ document.addEventListener('DOMContentLoaded', function () {
         updateMinimalMulai();
         updateMinimalSelesai();
     }, 60000);
+
+    <?php if (!empty($errors['general'])) : ?>
+    if (window.Swal) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Peminjaman tidak dapat diproses',
+            text: <?= json_encode($errors['general'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>,
+            confirmButtonText: 'Mengerti'
+        });
+    }
+    <?php endif; ?>
 });
 </script>
 <?= $this->endSection(); ?>

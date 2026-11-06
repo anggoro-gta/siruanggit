@@ -109,14 +109,16 @@
     }
 
     .user-table-actions {
-        display: inline-flex;
-        gap: .4rem;
-        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        white-space: normal;
     }
 
     .user-table-actions .btn {
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
         padding: 0;
         display: inline-flex;
         align-items: center;
@@ -168,6 +170,54 @@
         font-size: .85em;
     }
 
+    .user-table-card table.dataTable th:nth-child(2),
+    .user-table-card table.dataTable td:nth-child(2) {
+        width: 110px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.55;
+    }
+
+    .user-table-card table.dataTable th:nth-child(3),
+    .user-table-card table.dataTable td:nth-child(3) {
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
+
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.55;
+    }
+
+    .user-table-card table.dataTable th:nth-child(4),
+    .user-table-card table.dataTable td:nth-child(4) {
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
+
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.55;
+    }
+
+    .user-table-card table.dataTable th:nth-child(6),
+    .user-table-card table.dataTable td:nth-child(6) {
+        width: 110px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+
+        white-space: normal !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.55;
+    }
+
     @media (max-width: 767.98px) {
         .user-table-card .dataTables_wrapper .dataTables_length,
         .user-table-card .dataTables_wrapper .dataTables_filter {
@@ -180,6 +230,23 @@
         .user-table-card .dataTables_wrapper input {
             width: calc(100% - 4rem);
         }
+    }
+
+    #example1 tbody tr.row-dibatalkan td:not(:last-child),
+    #example1 tbody tr.row-dibatalkan td:not(:last-child) * {
+        color: #9aa1a8 !important;
+    }
+
+    #example1 tbody tr.row-dibatalkan td {
+        background-color: #f1f3f5 !important;
+    }
+
+    #example1 tbody tr.row-dibatalkan td:first-child {
+        border-left: 4px solid #adb5bd;
+    }
+
+    #example1 tbody tr.row-dibatalkan:hover td {
+        background-color: #e9ecef !important;
     }
 </style>
 <?= $this->endSection(); ?>
@@ -208,13 +275,14 @@
                         <option value="pending">Belum Verifikasi</option>
                         <option value="1">Disetujui</option>
                         <option value="0">Ditolak</option>
+                        <option value="2">Dibatalkan</option>
                     </select>
                 </div>
                 <button type="button" id="filterTanggal" class="btn btn-primary">Filter</button>
                 <button type="button" id="resetTanggal" class="btn btn-outline-secondary">Reset</button>
             </div>
             <hr>    
-            <table class="table" id="example1" style="width:100%">
+            <table class="table" id="example1">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -223,6 +291,7 @@
                         <th>Nama Peminjam (Organisasi)</th>
                         <th>Nama Ruang</th>
                         <th>Acara</th>
+                        <th>Harga Sewa</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -330,6 +399,19 @@
             processing: true,
             serverSide: true,
             deferRender: true,
+            rowCallback: function (row, data) {
+                const status = $('<div>')
+                    .html(data.status || '')
+                    .text()
+                    .trim()
+                    .toLowerCase();
+
+                if (status.includes('dibatalkan')) {
+                    $(row).addClass('row-dibatalkan');
+                } else {
+                    $(row).removeClass('row-dibatalkan');
+                }
+            },
             order: [[1, 'desc']],
             ajax: {
                 url: "<?= base_url('verifikasi-peminjaman-ruang/data'); ?>",
@@ -353,8 +435,9 @@
                     orderable: false,
                     searchable: false
                 },
+                { data: 'harga_pinjam', className: 'text-end', orderable:false, searchable:false,},
                 { data: 'status', className: 'text-center', orderable:false, searchable:false,},
-                { data: 'action', orderable:false, searchable:false, className:'text-center' }
+                { data: 'action', orderable:false, searchable:false }
             ]
         });
 

@@ -56,10 +56,11 @@ class PeminjamanRuang extends Model
         'created_by',
         'created_at',
         'updated_at',
-        'updated_by'
+        'updated_by',
+        'tanggal_pembatalan'
     ];
 
-    private function baseQuery(string $kodeDinas = '', string $userId = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '')
+    private function baseQuery(string $kodeDinas = '', string $userId = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '', bool $is_verif_pembayaran = false)
     {
         $builder = $this->builder();
         $builder
@@ -118,8 +119,12 @@ class PeminjamanRuang extends Model
                 null,
                 false
             );
-        } elseif (in_array($status, ['0', '1'], true)) {
+        } elseif (in_array($status, ['0', '1', '2'], true)) {
             $builder->where('tb_pinjamruang.isverifikasi', $status);
+        }
+
+        if($is_verif_pembayaran) {
+            $builder->where('tb_pinjamruang.hargasewa >', 0)->where('isverifikasibayar', '0');
         }
 
         if ($search !== '') {
@@ -134,20 +139,29 @@ class PeminjamanRuang extends Model
         return $builder;
     }
 
-    public function countAll(string $kodeDinas = '', string $userId = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
+    public function countAll(string $kodeDinas = '', string $userId = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '', bool $is_verif_pembayaran = false): int
     {
-        return $this->baseQuery($kodeDinas, $userId = '', '', $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
+        return $this->baseQuery($kodeDinas, $userId = '', '', $tanggalMulai, $tanggalSelesai, $status, $is_verif_pembayaran)->countAllResults();
     }
 
-    public function countFiltered(string $kodeDinas = '', string $userId = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = ''): int
+    public function countFiltered(string $kodeDinas = '', string $userId = '', string $search = '', string $tanggalMulai = '', string $tanggalSelesai = '', string $status = '', bool $is_verif_pembayaran = false): int
     {
-        return $this->baseQuery($kodeDinas, $userId, $search, $tanggalMulai, $tanggalSelesai, $status)->countAllResults();
+        return $this->baseQuery($kodeDinas, $userId, $search, $tanggalMulai, $tanggalSelesai, $status, $is_verif_pembayaran)->countAllResults();
     }
 
     public function countBelumVerifikasi(): int
     {
         return $this->builder()
             ->where('isverifikasi IS NULL', null, false)
+            ->countAllResults();
+    }
+
+    public function countBelumVerifikasiBayar(): int
+    {
+        return $this->builder()
+            ->where('isverifikasi', '1')
+            ->where('hargasewa >', '0')
+            ->where('isverifikasibayar', '0')
             ->countAllResults();
     }
 
@@ -161,7 +175,8 @@ class PeminjamanRuang extends Model
         string $userId = '',
         string $tanggalMulai = '',
         string $tanggalSelesai = '',
-        string $status = ''
+        string $status = '',
+        bool $is_verif_pembayaran = false
     ): array {
         $allowedOrder = [
             'tglpinjam'
@@ -175,7 +190,7 @@ class PeminjamanRuang extends Model
             ? 'DESC'
             : 'ASC';
 
-        return $this->baseQuery($kodeDinas, $userId, $search, $tanggalMulai, $tanggalSelesai, $status)
+        return $this->baseQuery($kodeDinas, $userId, $search, $tanggalMulai, $tanggalSelesai, $status, $is_verif_pembayaran)
             ->orderBy($orderBy, $orderDir)
             ->limit($limit, $offset)
             ->get()

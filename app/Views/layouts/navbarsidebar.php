@@ -67,12 +67,19 @@
                 <?php endif; ?>
             </a>
         </li> 
-        <li class="menu-item">
-            <a href="/" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-credit-card"></i>
+        
+        <?php $jumlahBelumVerifikasiBayar = (new \App\Models\PeminjamanRuang())->countBelumVerifikasiBayar(); ?>
+        <li class="menu-item active-menu-verifikasi-pembayaran">
+            <a href="<?= base_url('verifikasi-pembayaran') ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-pencil"></i>
                 <div data-i18n="Analytics">Verif. Pembayaran</div>
+                <?php if ($jumlahBelumVerifikasiBayar > 0) : ?>
+                    <span class="flex-shrink-0 badge rounded-pill bg-danger ms-1 badge-menu-count" title="<?= $jumlahBelumVerifikasiBayar ?> transaksi belum diverifikasi pembayaran">
+                        <?= $jumlahBelumVerifikasiBayar > 99 ? '99+' : $jumlahBelumVerifikasiBayar ?>
+                    </span>
+                <?php endif; ?>
             </a>
-        </li>   
+        </li> 
         <li class="menu-item active-menu-kalender-pinjam-ruang">
             <a href="<?= base_url('kalender-pinjam-ruang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>

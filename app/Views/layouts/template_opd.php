@@ -61,7 +61,20 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="<?= base_url() ?>/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <style>
+        .buy-now {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity .3s ease, visibility .3s ease;
+        }
 
+        .buy-now.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+    </style>
     <!-- Page CSS -->
     <?= $this->renderSection('csskhusus'); ?>
 
@@ -302,6 +315,28 @@
         });
     </script>
     <?php endif; ?>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const buyNow = document.querySelector('.buy-now');
+
+            if (!buyNow) {
+                return;
+            }
+
+            function toggleBuyNow() {
+                if (window.scrollY > 150) {
+                    buyNow.classList.add('show');
+                } else {
+                    buyNow.classList.remove('show');
+                }
+            }
+
+            window.addEventListener('scroll', toggleBuyNow);
+            toggleBuyNow();
+        });
+    </script>
+
 
     <!-- section javascript isinya disini -->
     <?= $this->renderSection('javascriptkhusus'); ?>

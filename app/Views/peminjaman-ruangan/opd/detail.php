@@ -5,12 +5,16 @@
     <?php if ($row['isverifikasi'] === '1') : ?>
         <div class="alert alert-success py-3 px-4" role="alert">
             <h5 class="alert-heading mb-1"><i class="bx bx-check-circle me-1"></i>Disetujui</h5>
-            <div>Note : <?= $row['keteranganverifikasi'] ?? '-' ?></div>
+            <div class="<?= empty($row['keteranganverifikasi']) ? 'd-none' : ''?>">Note : <?= $row['keteranganverifikasi'] ?? '-' ?></div>
         </div>
     <?php elseif ($row['isverifikasi'] === '0') : ?>
         <div class="alert alert-danger py-3 px-4" role="alert">
             <h5 class="alert-heading mb-1"><i class="bx bx-x-circle me-1"></i>Ditolak</h5>
-            <div>Note : <?= $row['keteranganverifikasi'] ?? '-' ?></div>
+            <div class="<?= empty($row['keteranganverifikasi']) ? 'd-none' : ''?>">Note : <?= $row['keteranganverifikasi'] ?? '-' ?></div>
+        </div>
+    <?php elseif ($row['isverifikasi'] === '2') : ?>
+        <div class="alert alert-secondary py-3 px-4" role="alert">
+            <h5 class="alert-heading mb-1"><i class="bx bx-x-circle me-1"></i>Dibatalkan</h5>
         </div>
     <?php else : ?>
         <div class="alert alert-primary py-3 px-4" role="alert">

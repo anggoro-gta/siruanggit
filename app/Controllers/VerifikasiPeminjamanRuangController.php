@@ -44,7 +44,7 @@ class VerifikasiPeminjamanRuangController extends BaseController
             $tanggalMulai = $this->normalizeFilterDate($tanggalMulai);
             $tanggalSelesai = $this->normalizeFilterDate($tanggalSelesai);
             $status = (string) $this->request->getPost('status');
-            if (!in_array($status, ['all', 'pending', '', '0', '1'], true)) {
+            if (!in_array($status, ['all', 'pending', '', '0', '1', '2'], true)) {
                 $status = 'all';
             }
             if ($tanggalMulai !== '' && $tanggalSelesai !== '' && $tanggalMulai > $tanggalSelesai) {
@@ -68,44 +68,131 @@ class VerifikasiPeminjamanRuangController extends BaseController
             $data = [];
             foreach ($rows as $r) {
 
-                $isVerifikasi = $r['isverifikasi'];
+                $isVerifikasi      = (string) ($r['isverifikasi'] ?? '');
+                $isVerifikasiBayar = isset($r['isverifikasibayar'])
+                    ? (string) $r['isverifikasibayar']
+                    : '';
 
-                $status = '<span class="badge rounded-pill bg-label-info">Belum Verifikasi</span>';
+                $id        = (int) $r['id'];
+                $hargaSewa = (float) ($r['hargasewa'] ?? 0);
 
-                $btn = '<div class="user-table-actions">
-                            <a href="' . base_url('verifikasi-peminjaman-ruang/detail/' . $r['id']) . '" class="btn btn-xs btn-outline-info" title="Detail" aria-label="Detail">
-                                <i class="bx bx-detail"></i>
-                            </a>
-                        </div>';
+
+                /*
+                |--------------------------------------------------------------------------
+                | URL ACTION
+                |--------------------------------------------------------------------------
+                */
+
+                $urlDetail = base_url('verifikasi-peminjaman-ruang/detail/' . $id);
+                $urlCetak  = base_url('verifikasi-peminjaman-ruang/cetak/' . $id);
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | STATUS VERIFIKASI
+                |--------------------------------------------------------------------------
+                */
+
+                switch ($isVerifikasi) {
+                    case '1':
+                        $status = '
+                            <span class="badge rounded-pill bg-label-success">
+                                Disetujui
+                            </span>';
+                        break;
+
+                    case '0':
+                        $status = '
+                            <span class="badge rounded-pill bg-label-danger">
+                                Ditolak
+                            </span>';
+                        break;
+
+                    case '2':
+                        $status = '
+                            <span class="badge rounded-pill bg-label-secondary">
+                                Dibatalkan
+                            </span>';
+                        break;
+
+                    default:
+                        $status = '
+                            <span class="badge rounded-pill bg-label-info">
+                                Belum Verifikasi
+                            </span>';
+                        break;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | TOMBOL AKSI
+                |--------------------------------------------------------------------------
+                |
+                | Semua status memiliki tombol Detail.
+                | Tombol Cetak hanya muncul jika peminjaman sudah disetujui.
+                |
+                */
+
+                $btn = '
+                    <div class="user-table-actions">
+
+                        <a href="' . $urlDetail . '"
+                        class="btn btn-xs btn-outline-info"
+                        title="Detail"
+                        aria-label="Detail">
+                            <i class="bx bx-detail"></i>
+                        </a>';
 
                 if ($isVerifikasi === '1') {
-                    $status = '<span class="badge rounded-pill bg-label-success">Disetujui</span>';
-                    $btn = '<div class="user-table-actions">
-                            <a href="' . base_url('verifikasi-peminjaman-ruang/detail/' . $r['id']) . '" class="btn btn-xs btn-outline-info" title="Detail" aria-label="Detail">
-                                <i class="bx bx-detail"></i>
-                            </a>
-                            <a href="' . base_url('verifikasi-peminjaman-ruang/cetak/' . $r['id']) . '" class="btn btn-xs btn-outline-warning" title="Cetak" aria-label="Cetak" target="_blank">
-                                <i class="bx bx-printer"></i>
-                            </a>
-                        </div>';
-                } else if ($isVerifikasi === '0') {
-                    $status = '<span class="badge rounded-pill bg-label-danger">Ditolak</span>';
+                    $btn .= '
+                        <a href="' . $urlCetak . '"
+                        class="btn btn-xs btn-outline-warning"
+                        title="Cetak"
+                        aria-label="Cetak"
+                        target="_blank">
+                            <i class="bx bx-printer"></i>
+                        </a>';
                 }
+
+                $btn .= '
+                    </div>';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | INFORMASI ACARA
+                |--------------------------------------------------------------------------
+                */
 
                 $acara = '
                     <div class="acara-wrapper">
+
                         <div class="acara-item">
+
                             <span class="acara-icon">
                                 <i class="bx bx-calendar"></i>
                             </span>
 
                             <div class="acara-text">
-                                <div>' . esc(tanggal_indo($r['tgljamacaramulai'])) . ' ' . date('H:i', strtotime($r['tgljamacaramulai'])) . ' s.d. </div>
-                                <div>' . esc(tanggal_indo($r['tgljamacaraselesai'])) . ' ' . date('H:i', strtotime($r['tgljamacaraselesai'])) . '</div>
+
+                                <div>
+                                    ' . esc(tanggal_indo($r['tgljamacaramulai'])) . '
+                                    ' . date('H:i', strtotime($r['tgljamacaramulai'])) . '
+                                    s.d.
+                                </div>
+
+                                <div>
+                                    ' . esc(tanggal_indo($r['tgljamacaraselesai'])) . '
+                                    ' . date('H:i', strtotime($r['tgljamacaraselesai'])) . '
+                                </div>
+
                             </div>
                         </div>
 
+
                         <div class="acara-item">
+
                             <span class="acara-icon">
                                 <i class="bx bx-note"></i>
                             </span>
@@ -113,10 +200,89 @@ class VerifikasiPeminjamanRuangController extends BaseController
                             <div class="acara-text">
                                 ' . esc($r['acara'] ?? '-') . '
                             </div>
+
                         </div>
+
                     </div>';
 
-                $nama_peminjam = $r['namapeminjam'].'<br><small class="text-muted">' . esc($r['namaorganisasi'] ?? '-') . '</small>';
+
+                /*
+                |--------------------------------------------------------------------------
+                | NAMA PEMINJAM
+                |--------------------------------------------------------------------------
+                */
+
+                $nama_peminjam = '
+                    ' . esc($r['namapeminjam'] ?? '-') . '
+                    <br>
+                    <small class="text-muted">
+                        ' . esc($r['namaorganisasi'] ?? '-') . '
+                    </small>';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | HARGA SEWA
+                |--------------------------------------------------------------------------
+                */
+
+                $harga_pinjam = 'Rp ' . number_format(
+                    $hargaSewa,
+                    0,
+                    ',',
+                    '.'
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | STATUS PEMBAYARAN
+                |--------------------------------------------------------------------------
+                |
+                | Status pembayaran ditampilkan apabila:
+                | 1. Harga sewa > 0
+                | 2. Peminjaman sudah disetujui atau dibatalkan
+                |
+                | isverifikasibayar:
+                | 1    = Sudah Bayar
+                | 0    = Menunggu Verifikasi Pembayaran
+                | null = Belum Bayar
+                |
+                */
+
+                $status_bayar = '';
+
+                if (
+                    $hargaSewa > 0 &&
+                    in_array($isVerifikasi, ['1', '2'], true)
+                ) {
+
+                    switch ($isVerifikasiBayar) {
+                        case '1':
+                            $status_bayar = '
+                                <br>
+                                <span class="text-success">
+                                    <i>Sudah Bayar</i>
+                                </span>';
+                            break;
+
+                        case '0':
+                            $status_bayar = '
+                                <br>
+                                <span class="text-info">
+                                    <i>Menunggu Verifikasi Pembayaran</i>
+                                </span>';
+                            break;
+
+                        default:
+                            $status_bayar = '
+                                <br>
+                                <span class="text-warning">
+                                    <i>Belum Bayar</i>
+                                </span>';
+                            break;
+                    }
+                }
 
                 $data[] = [
                     'no_pinjam' => $r['nopinjam'] ?? '-',
@@ -124,7 +290,7 @@ class VerifikasiPeminjamanRuangController extends BaseController
                     'nama_peminjam' => $nama_peminjam,
                     'nama_ruang' => $r['nama_ruang'] ?? '-',
                     'acara' => $acara,
-                    'harga_pinjam' => $r['hargasewa'] ?? '0',
+                    'harga_pinjam' => $harga_pinjam . $status_bayar,
                     'status' => $status,
                     'action' => $btn,
                 ];
@@ -248,7 +414,7 @@ class VerifikasiPeminjamanRuangController extends BaseController
             'id'                   => 'required|is_natural_no_zero', 
             'isverifikasi'         => 'required', 
             'tglverifikasi'        => 'required', 
-            'keteranganverifikasi' => 'required'
+            'keteranganverifikasi' => 'permit_empty|string|max_length[500]',
         ];
         
         if (!$id || !$this->validate($rules))
@@ -286,6 +452,59 @@ class VerifikasiPeminjamanRuangController extends BaseController
             $db->transCommit();
 
             return redirect()->to('/verifikasi-peminjaman-ruang')->with('success', 'Berhasil verifikasi peminjaman ruang.');
+
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            log_message('error', $e->getMessage());
+
+            return redirect()->back()->withInput()->with('errors', ['general' => $e->getMessage()]);
+        }
+    }
+
+    public function cancel()
+    {
+        $id = (int) $this->request->getPost('id');
+        $now = date('Y-m-d H:i:s');
+
+        $rules = [
+            'id'                   => 'required|is_natural_no_zero',
+            'keteranganpembatalan' => 'required'
+        ];
+        
+        if (!$id || !$this->validate($rules))
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+
+        $tanggal_pembatalan   = date('Y-m-d H:i:s');
+        $isverifikasi   = 2; // 2 = dibatalkan
+        $keteranganpembatalan   = $this->request->getPost('keteranganpembatalan');
+
+        $db = \Config\Database::connect();
+        $db->transBegin();
+
+        try {
+            
+            $existing = $this->pinjam_ruang->getById($id);
+            if (!$existing)
+                throw new \RuntimeException('Data peminjaman tidak ditemukan.');
+            
+            $data = [
+                'isverifikasi'         => $isverifikasi,
+                'tanggal_pembatalan'   => $tanggal_pembatalan,
+                'keteranganpembatalan' => $keteranganpembatalan
+            ];
+
+            if (!$this->pinjam_ruang->update($id, $data)) {
+                $dbError = $db->error();
+                throw new \RuntimeException('Gagal memperbarui data peminjaman: ' . ($dbError['message'] ?? 'query database gagal.'));
+            }
+
+            if ($db->transStatus() === false)
+                throw new \RuntimeException('DB transaction failed.');
+
+            $db->transCommit();
+
+            return redirect()->to('/verifikasi-peminjaman-ruang')->with('success', 'Berhasil membatalkan peminjaman ruang.');
 
         } catch (\Throwable $e) {
             $db->transRollback();
