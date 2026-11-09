@@ -366,7 +366,7 @@
                     </div>
                 </div>
                 
-                <?php if (!in_array($row['isverifikasi'], ['0', '2']) && date('Y-m-d', strtotime($row['tgljamacaramulai'])) > date('Y-m-d')) {
+                <?php if ($row['isverifikasi']==='1' && date('Y-m-d H:i:s', strtotime($row['tgljamacaraselesai'])) > date('Y-m-d H:i:s')) {
                 ?>
                 <button type="button" class="btn btn-danger btn-pembatalan">Pembatalan</button>
                 <?php
