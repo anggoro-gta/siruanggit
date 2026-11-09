@@ -14,8 +14,10 @@ class Home extends BaseController
         
         if ($kategoriuser === 'admin') {
             return view('home/index', $data);
-        } else {
+        } else if ($kategoriuser === 'opd') {
             return view('home/index_opd', $data);
+        } else {
+            return view('home/index_masyarakat', $data);
         }
 
         

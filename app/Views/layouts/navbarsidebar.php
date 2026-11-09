@@ -71,7 +71,7 @@
         <?php $jumlahBelumVerifikasiBayar = (new \App\Models\PeminjamanRuang())->countBelumVerifikasiBayar(); ?>
         <li class="menu-item active-menu-verifikasi-pembayaran">
             <a href="<?= base_url('verifikasi-pembayaran') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-pencil"></i>
+                <i class="menu-icon tf-icons bx bx-money"></i>
                 <div data-i18n="Analytics">Verif. Pembayaran</div>
                 <?php if ($jumlahBelumVerifikasiBayar > 0) : ?>
                     <span class="flex-shrink-0 badge rounded-pill bg-danger ms-1 badge-menu-count" title="<?= $jumlahBelumVerifikasiBayar ?> transaksi belum diverifikasi pembayaran">
@@ -86,12 +86,12 @@
                 <div data-i18n="Analytics">Kalender Pinjam Ruang</div>
             </a>
         </li>
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="/" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-stop-circle"></i>
                 <div data-i18n="Analytics">Pembatalan</div>
             </a>
-        </li>
+        </li> -->
 
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Laporan</span>

@@ -12,7 +12,7 @@ $routes->get('/', 'Landing::index');
 /**
  * ROUTES HALAMAN ADMIN
  */
-$routes->get('/home', 'Home::index', ['filter' => 'role:admin,useropd']);
+$routes->get('/home', 'Home::index', ['filter' => 'role:admin,useropd,adminmasyarakat']);
 
 // master-user
 $routes->get('/master-user', 'UserController::index', ['filter' => 'role:admin']);
