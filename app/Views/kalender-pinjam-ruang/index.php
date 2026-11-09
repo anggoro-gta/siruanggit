@@ -1,8 +1,10 @@
 <?php
     if($role==='admin'){
         echo $this->extend('layouts/template');
-    }else{
+    }else if($role==='useropd'){
         echo $this->extend('layouts/template_opd');
+    }else if($role==='adminmasyarakat'){
+        echo $this->extend('layouts/template_masyarakat');
     }
 ?>
 

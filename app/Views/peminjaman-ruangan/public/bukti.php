@@ -26,6 +26,7 @@ $logo = is_file($logoPath) ? 'data:image/png;base64,' . base64_encode((string) f
         .content { padding: 24px; }
         .status { display: inline-block; color: #079642; font-weight: bold; }
         .warning { display: inline-block; color: #d49400; font-weight: bold; }
+        .danger { display: inline-block; color: #d40000; font-weight: bold; }
         .primary { display: inline-block; color: #0052b7; font-weight: bold; }
         .success { display: inline-block; color: #079642; font-weight: bold; }
         .booking { display: grid; grid-template-columns: .85fr 1fr 1.65fr; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid #e5e7eb; }
@@ -72,6 +73,18 @@ $logo = is_file($logoPath) ? 'data:image/png;base64,' . base64_encode((string) f
                     <tr>
                         <td>Status Pemesanan</td>
                         <td>
+                            <?php
+                                $isverifikasi = $row['isverifikasi'] ?? null;
+                                if ($isverifikasi === '1') {
+                                    echo '<div class="success">Disetujui</div>';
+                                } elseif ($isverifikasi === '0') {
+                                    echo '<div class="warning">Ditolak</div>';
+                                } elseif ($isverifikasi === '2') {
+                                    echo '<div class="danger">Dibatalkan</div>';
+                                } else {
+                                    echo '<div class="primary">Menunggu Diverifikasi</div>';
+                                }
+                            ?>
                             <div class="status">Disetujui</div>
                         </td>
                     </tr>

@@ -87,10 +87,18 @@ class Ruang extends Model
             ->getResultArray();
     }
 
-    public function getAll(): array
+    public function getAll(string $role = ''): array
     {
-        return $this->orderBy('id', 'ASC')
-            ->findAll();
+        $builder = $this->builder();
+
+        if ($role === 'adminmasyarakat') {
+            $builder->where('peruntukan', 'masyarakat');
+        }
+
+        return $builder
+            ->orderBy('id', 'ASC')
+            ->get()
+            ->getResultArray();
     }
 
     public function getById(int $id): ?array

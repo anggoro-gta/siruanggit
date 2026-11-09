@@ -24,8 +24,8 @@ $routes->post('/master-user/update', 'UserController::update', ['filter' => 'rol
 $routes->get('/master-user/delete/(:num)', 'UserController::delete/$1', ['filter' => 'role:admin']);
 
 //reset-password
-$routes->get('/reset-password/(:num)', 'UserController::resetPassword/$1', ['filter' => 'role:admin,useropd']);
-$routes->post('/reset-password/save', 'UserController::resetPasswordSave', ['filter' => 'role:admin,useropd']);
+$routes->get('/reset-password/(:num)', 'UserController::resetPassword/$1', ['filter' => 'role:admin,useropd,adminmasyarakat']);
+$routes->post('/reset-password/save', 'UserController::resetPasswordSave', ['filter' => 'role:admin,useropd,adminmasyarakat']);
 
 // master-slider
 $routes->get('/master-slider', 'SliderController::index', ['filter' => 'role:admin']);
@@ -105,4 +105,17 @@ $routes->post('/verifikasi-pembayaran/update', 'VerifikasiPembayaranController::
 $routes->get('/bukti-pemesanan/(:any)', 'VerifikasiPeminjamanRuangController::publik/$1');
 
 // kalender-pinjam-ruang
-$routes->get('/kalender-pinjam-ruang', 'KalenderPinjamRuangController::index/$1', ['filter' => 'role:admin,useropd']);
+$routes->get('/kalender-pinjam-ruang', 'KalenderPinjamRuangController::index/$1', ['filter' => 'role:admin,useropd,adminmasyarakat']);
+
+// peminjaman-ruang-masyarakat
+$routes->get('/peminjaman-ruang-masyarakat', 'PeminjamanRuangMasyarakatController::index', ['filter' => 'role:adminmasyarakat']);
+$routes->match(['get', 'post'], '/peminjaman-ruang-masyarakat/data', 'PeminjamanRuangMasyarakatController::getData', ['filter' => 'role:adminmasyarakat']);
+$routes->get('/peminjaman-ruang-masyarakat/create', 'PeminjamanRuangMasyarakatController::create', ['filter' => 'role:adminmasyarakat']);
+$routes->post('/peminjaman-ruang-masyarakat/timeline', 'PeminjamanRuangMasyarakatController::timeline', ['filter' => 'role:adminmasyarakat']);
+$routes->post('/peminjaman-ruang-masyarakat/store', 'PeminjamanRuangMasyarakatController::store', ['filter' => 'role:adminmasyarakat']);
+$routes->get('/peminjaman-ruang-masyarakat/edit/(:num)', 'PeminjamanRuangMasyarakatController::edit/$1', ['filter' => 'role:adminmasyarakat']);
+$routes->get('/peminjaman-ruang-masyarakat/detail/(:num)', 'PeminjamanRuangMasyarakatController::detail/$1', ['filter' => 'role:adminmasyarakat']);
+$routes->post('/peminjaman-ruang-masyarakat/update', 'PeminjamanRuangMasyarakatController::update', ['filter' => 'role:adminmasyarakat']);
+$routes->get('/peminjaman-ruang-masyarakat/delete/(:num)', 'PeminjamanRuangMasyarakatController::delete/$1', ['filter' => 'role:adminmasyarakat']);
+$routes->get('/peminjaman-ruang-masyarakat/cetak/(:num)', 'PeminjamanRuangMasyarakatController::cetak/$1', ['filter' => 'role:adminmasyarakat']);
+$routes->post('/peminjaman-ruang-masyarakat/bayar', 'PeminjamanRuangMasyarakatController::pay', ['filter' => 'role:adminmasyarakat']);

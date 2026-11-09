@@ -213,9 +213,9 @@ class PeminjamanRuang extends Model
             ->getRowArray() ?: null;
     }
 
-    public function getTimelineByRange(string $mulai, string $selesai, string $kodeRuang = '', ?int $excludeId = null): array
+    public function getTimelineByRange(string $mulai, string $selesai, string $kodeRuang = '', ?int $excludeId = null, string $role = ''): array
     {
-        return $this->baseQuery()
+        $query = $this->baseQuery()
             ->select([
                 'tb_pinjamruang.id',
                 'tb_pinjamruang.nopinjam',
@@ -229,20 +229,27 @@ class PeminjamanRuang extends Model
             ])
             ->where('tb_pinjamruang.tgljamacaramulai <=', $selesai)
             ->where('tb_pinjamruang.tgljamacaraselesai >=', $mulai)
-            ->where('tb_pinjamruang.kode_ruang', $kodeRuang)
-            ->groupStart()
+            ->where('tb_pinjamruang.kode_ruang', $kodeRuang);
+
+        if($role === 'adminmasyarakat') {
+            $query->where('ms_ruang.peruntukan', 'masyarakat');
+        }
+        
+        $query->groupStart()
                 ->where('tb_pinjamruang.isverifikasi', 1)
                 ->orWhere('tb_pinjamruang.isverifikasi IS NULL', null, false)
             ->groupEnd()
             ->when($excludeId, static function ($query) use ($excludeId) {
                 $query->where('tb_pinjamruang.id !=', $excludeId);
             })
-            ->orderBy('tb_pinjamruang.tgljamacaramulai', 'ASC')
+            ->orderBy('tb_pinjamruang.tgljamacaramulai', 'ASC');
+            
+        return $query
             ->get()
             ->getResultArray();
     }
 
-    public function getPublicCalendarEvents(string $mulai = '', string $selesai = '', string $kodeRuang = ''): array
+    public function getPublicCalendarEvents(string $mulai = '', string $selesai = '', string $kodeRuang = '', string $role = ''): array
     {
         $query = $this->baseQuery()
             ->select([
@@ -265,6 +272,10 @@ class PeminjamanRuang extends Model
 
         if ($selesai !== '') {
             $query->where('tb_pinjamruang.tgljamacaraselesai >=', $mulai);
+        }
+
+        if ($role === 'adminmasyarakat') {
+            $query->where('ms_ruang.peruntukan', 'masyarakat');
         }
 
         return $query

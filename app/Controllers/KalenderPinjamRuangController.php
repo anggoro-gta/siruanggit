@@ -26,11 +26,13 @@ class KalenderPinjamRuangController extends BaseController
             $role = 'admin';
         } elseif (in_groups('useropd')) {
             $role = 'useropd';
+        } elseif (in_groups('adminmasyarakat')) {
+            $role = 'adminmasyarakat';
         }
         
         $ruangId = trim((string) $this->request->getGet('ruang_id'));
-        $getruang = $this->ruang->getAll();
-        $getjadwal = $this->peminjamanRuang->getPublicCalendarEvents('', '', $ruangId);
+        $getruang = $this->ruang->getAll($role);
+        $getjadwal = $this->peminjamanRuang->getPublicCalendarEvents('', '', $ruangId, $role);
 
         $data = [
             'title'      => 'Kalender Pinjam Ruang',

@@ -27,8 +27,8 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Transaksi</span>
         </li>
-        <li class="menu-item active-menu-peminjaman-ruang-opd">
-            <a href="#" class="menu-link">
+        <li class="menu-item active-menu-peminjaman-ruang-masyarakat">
+            <a href="<?= base_url('peminjaman-ruang-masyarakat') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-pencil"></i>
                 <div data-i18n="Analytics">Peminjaman Ruang</div>
             </a>
@@ -40,7 +40,7 @@
             </a>
         </li> -->
         <li class="menu-item active-menu-kalender-pinjam-ruang">
-            <a href="#" class="menu-link">
+            <a href="<?= base_url('kalender-pinjam-ruang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>
                 <div data-i18n="Analytics">Kalender Pinjam Ruang</div>
             </a>
