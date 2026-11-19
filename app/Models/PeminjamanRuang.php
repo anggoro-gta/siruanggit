@@ -302,4 +302,20 @@ class PeminjamanRuang extends Model
 
         return $query->countAllResults() > 0;
     }
+
+    //tamabahan method menghitung terkait jumlah ruang yang dipinjam dengan berbagai kondisi
+    public function counttotalpinjamruang($kode_dinas = null, $status = null)
+    {
+        $builder = $this->builder();
+
+        if ($kode_dinas !== null) {
+            $builder->where('kode_dinas', $kode_dinas);
+        }
+
+        if ($status !== null) {
+            $builder->where('isverifikasi', $status);
+        }
+
+        return $builder->countAllResults();
+    }
 }

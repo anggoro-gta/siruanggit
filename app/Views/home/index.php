@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Jumlah Pengajuan</span>
-                    <h3 class="card-title mb-2">4684</h3>
+                    <h3 class="card-title mb-2"><?= $semuaruang; ?></h3>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Pengajuan Diterima</span>
-                    <h3 class="card-title mb-2">2698</h3>
+                    <h3 class="card-title mb-2"><?= $disetujui; ?></h3>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Pengajuan Ditolak</span>
-                    <h3 class="card-title mb-2">1033</h3>
+                    <h3 class="card-title mb-2"><?= $ditolak; ?></h3>
                 </div>
             </div>
         </div>
@@ -173,7 +173,7 @@
                         </div>
                     </div>
                     <span class="fw-semibold d-block mb-1">Pengajuan Dibatalkan</span>
-                    <h3 class="card-title mb-2">1</h3>
+                    <h3 class="card-title mb-2"><?= $dibatalkan; ?></h3>
                 </div>
             </div>
         </div>
