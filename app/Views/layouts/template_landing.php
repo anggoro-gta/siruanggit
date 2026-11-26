@@ -156,6 +156,133 @@
           color: #6c757d;
       }
     </style>
+    
+    <style>
+        .whatsapp-float {
+            position: fixed;
+            right: 15px;
+            bottom: 24px;
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            text-decoration: none;
+
+            transition:
+                right 0.3s ease,
+                transform 0.25s ease;
+        }
+
+        .whatsapp-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #25D366;
+            color: #ffffff;
+
+            border-radius: 50%;
+
+            font-size: 25px;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.18);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .whatsapp-float:hover .whatsapp-icon {
+            transform: scale(1.08);
+
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 70px;
+
+            white-space: nowrap;
+
+            background: #ffffff;
+            color: #333333;
+
+            padding: 10px 15px;
+            border-radius: 8px;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transform: translateX(10px);
+
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease,
+                visibility 0.25s;
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+            visibility: visible;
+
+            transform: translateX(0);
+        }
+
+        /* Panah kecil tooltip */
+        .whatsapp-tooltip::before {
+            content: "";
+
+            position: absolute;
+            right: -6px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid #ffffff;
+        }
+
+        .whatsapp-float.scroll-top-visible {
+            bottom: 70px;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .whatsapp-float {
+                right: 15px;
+                bottom: 16px;
+            }
+
+            .whatsapp-float.scroll-top-visible {
+                bottom: 75px;
+            }
+
+            .whatsapp-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 26px;
+            }
+
+            .whatsapp-tooltip {
+                right: 62px;
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+        }
+    </style>
 </head>
 
 <body class="index-page">
@@ -510,6 +637,23 @@
       </div>
   </div>
 
+  <!-- Floating WhatsApp -->
+  <a
+      href="https://wa.me/6285646661868"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="whatsapp-float"
+      aria-label="Hubungi kami melalui WhatsApp"
+  >
+      <span class="whatsapp-tooltip">
+          Butuh pinjam ruang? Hubungi kami
+      </span>
+
+      <span class="whatsapp-icon">
+          <i class="bi bi-whatsapp"></i>
+      </span>
+  </a>
+  
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -847,6 +991,34 @@
               card.style.display = searchData.includes(keyword)
                   ? ''
                   : 'none';
+          });
+      });
+  </script>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const whatsappButton = document.querySelector('.whatsapp-float');
+          const scrollTopButton = document.querySelector('#scroll-top');
+
+          if (!whatsappButton || !scrollTopButton) {
+              return;
+          }
+
+          const updateWhatsappPosition = function () {
+              if (scrollTopButton.classList.contains('active')) {
+                  whatsappButton.classList.add('scroll-top-visible');
+              } else {
+                  whatsappButton.classList.remove('scroll-top-visible');
+              }
+          };
+
+          updateWhatsappPosition();
+
+          const observer = new MutationObserver(updateWhatsappPosition);
+
+          observer.observe(scrollTopButton, {
+              attributes: true,
+              attributeFilter: ['class']
           });
       });
   </script>
